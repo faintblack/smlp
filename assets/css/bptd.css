@@ -1,0 +1,19 @@
+<style type="text/css">
+  .a{
+
+  }
+  .table > thead > tr > th{
+      vertical-align: middle;
+  }
+  .table > tbody > tr > td{
+        vertical-align: middle;
+      }
+  #sidebar-menu{
+    padding-top: 0px;
+  }
+  .breadcrumb{
+    padding-top: 0px;
+    margin-bottom: 10px;
+  }
+  
+</style>
