@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+date_default_timezone_set("Asia/Jakarta");
 
 class CetakController extends CI_Controller {
 
@@ -117,7 +118,7 @@ class CetakController extends CI_Controller {
 
 				case 'Proses':
 					$mulai = date('H:i:s');
-					$data = array('id_percetakan' => $id_p['b.id_percetakan'], 'sesi' => $this->input->post('sesi', TRUE), 'jam_masuk_pre_cetak' => $mulai, 'jumlah_cetak' => $this->input->post('jumlah_cetak', TRUE), 'status' => $this->input->post('status', TRUE), 'username' => $this->input->post('user', TRUE));
+					$data = array('id_percetakan' => $id_p['b.id_percetakan'], 'sesi' => $this->input->post('sesi', TRUE), 'jam_masuk_cetak' => $mulai, 'jumlah_cetak' => $this->input->post('jumlah_cetak', TRUE), 'status' => $this->input->post('status', TRUE), 'username' => $this->input->post('user', TRUE));
 				break;
 
 				case 'Selesai':
@@ -125,12 +126,20 @@ class CetakController extends CI_Controller {
 					$data = array('id_percetakan' => $id_p['b.id_percetakan'], 'sesi' => $this->input->post('sesi', TRUE), 'jam_selesai_pre_cetak' => $selesai, 'jumlah_cetak' => $this->input->post('jumlah_cetak', TRUE), 'status' => $this->input->post('status', TRUE), 'username' => $this->input->post('user', TRUE));
 				break;
 			}
-		print_r($data_c_check);exit();
+		print_r($data);exit();
 
 		// UPDATE DATA CETAK
 			// JIKA SESI DIUBAH
 			if ($this->input->post('sesi-old', TRUE) != $this->input->post('sesi', TRUE)) {
-				# code...
+				// JIKA SESI BARU SUDAH ADA PADA DATABASE
+					foreach ($data_c_check as $v) {					
+						if ($v->sesi == $this->input->post('sesi', TRUE)) {
+							$this->session->set_flashdata('edit_cetak_2','Data aktivitas tidak berhasil diupdate, sesi sudah diinputkan sebelumnya');
+							redirect('precetakcontroller/status');
+						}
+					}
+
+				$update_c = $this->Cetak->update($id_c, $data);
 			}
 
 		/*-------------------------------------------------------------*/

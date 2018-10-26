@@ -68,11 +68,6 @@
 						                    	<?php
 						                    		}
 						                    	}
-						                    	if ($empty_today) {
-						                    	?>
-						                    	<option value="">Belum ada data percetakan hari ini</option>
-						                    	<?php
-						                    	}
 						                    	?>																	
 																</select> 
 					                  </div> 
@@ -297,7 +292,7 @@
                   </td>
                   <td>
                   	<center>
-                  	<a href="" title="Edit Aktivitas" onclick="setId('<?php echo $v->id_cetak; ?>', '<?php echo $v->id_percetakan; ?>', '<?php echo $v->tanggal; ?>','<?php echo $v->nama_koran; ?>','<?php echo $v->sesi; ?>','<?php echo $v->jam_masuk_cetak; ?>','<?php echo $v->jam_selesai_cetak; ?>','<?php echo $v->jumlah_cetak; ?>','<?php echo $v->status; ?>','<?php echo substr($v->tanggal,8,2).' '.$nama_bulan[substr($v->tanggal, 5,2)].' '.substr($v->tanggal,0,4); ?>')" data-toggle="modal" data-target="#edit-proses"><i style="font-size: 20px;" class=" md-create"></i></a>
+                  	<a href="" display="none" title="Edit Aktivitas" onclick="setId('<?php echo $v->id_cetak; ?>', '<?php echo $v->id_percetakan; ?>', '<?php echo $v->tanggal; ?>','<?php echo $v->nama_koran; ?>','<?php echo $v->sesi; ?>','<?php echo $v->jam_masuk_cetak; ?>','<?php echo $v->jam_selesai_cetak; ?>','<?php echo $v->jumlah_cetak; ?>','<?php echo $v->status; ?>','<?php echo substr($v->tanggal,8,2).' '.$nama_bulan[substr($v->tanggal, 5,2)].' '.substr($v->tanggal,0,4); ?>')" data-toggle="modal" data-target="#edit-proses"><i style="font-size: 20px;" class=" md-create"></i></a>
                   	<!--
                   		&nbsp;&nbsp;&nbsp;
                   	<a title="Hapus Aktivitas" href="" onclick="return confirm('Apakah Anda yakin ingin menghapus data pengguna atas nama  ?')"><i style="font-size: 20px;" class="ion-trash-a"></i></a>-->

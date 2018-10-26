@@ -88,7 +88,7 @@ class PreCetakController extends CI_Controller {
 		$tanggal_mantap = $tahun.'-'.$bulan.'-'.$tanggal;
 
 		$id_pc = array('id_pre_cetak' => $this->input->post('id_pre_cetak', TRUE)); 
-		$id_p = array('id_percetakan' => $this->input->post('id_percetakan', TRUE));
+		$id_p = array('b.id_percetakan' => $this->input->post('id_percetakan', TRUE));
 
 		// JIKA GANTI TANGGAL ATAU NAMA KORAN
 			if (($this->input->post('tanggal-old', TRUE) != $this->input->post('tanggal', TRUE)) || ($this->input->post('nama_koran-old', TRUE) != $this->input->post('nama_koran', TRUE))) {
