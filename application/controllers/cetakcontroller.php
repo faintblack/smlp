@@ -87,11 +87,11 @@ class CetakController extends CI_Controller {
 		$bulan = substr($this->input->post('tanggal', TRUE), 0, 2);
 		$tahun = substr($this->input->post('tanggal', TRUE), 6, 4);
 
-		$tanggal_mantap = $tahun.'-'.$bulan.'-'.$tanggal;
+		$tanggal_mantap = $this->input->post('tanggal', TRUE);
 
 		$id_c = array('id_cetak' => $this->input->post('id_cetak', TRUE)); 
 		$id_p = array('b.id_percetakan' => $this->input->post('id_percetakan', TRUE));
-		
+
 		// JIKA GANTI NAMA KORAN
 			if ($this->input->post('nama_koran-old', TRUE) != $this->input->post('nama_koran', TRUE)) {
 				$data_p = array('tanggal' => $tanggal_mantap, 'nama_koran' => $this->input->post('nama_koran', TRUE));
@@ -126,7 +126,7 @@ class CetakController extends CI_Controller {
 					$data = array('id_percetakan' => $id_p['b.id_percetakan'], 'sesi' => $this->input->post('sesi', TRUE), 'jam_selesai_pre_cetak' => $selesai, 'jumlah_cetak' => $this->input->post('jumlah_cetak', TRUE), 'status' => $this->input->post('status', TRUE), 'username' => $this->input->post('user', TRUE));
 				break;
 			}
-		print_r($data);exit();
+		print_r($this->input->post('sesi', TRUE));exit();
 
 		// UPDATE DATA CETAK
 			// JIKA SESI DIUBAH

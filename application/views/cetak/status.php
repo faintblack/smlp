@@ -114,7 +114,11 @@
 				      </div>
 
 			      <!-- EDIT PROSES -->
-				     	<div id="edit-proses" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+			      	<?php
+			      	foreach ($data_cetak as $v) {
+			      		$tgl = substr($v->tanggal,8,2).' '.$nama_bulan[substr($v->tanggal,5,2)].' '.substr($v->tanggal,0,4);
+			      	?>
+			      	<div id="edit-proses-<?php echo $v->id_cetak; ?>" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 				      	<?php 
 				      	$attribute = array('data-parsley-validate' => '', 'novalidate' => '', 'role' => 'form');
 				      	echo form_open('cetakcontroller/editproses'); ?>
@@ -126,8 +130,8 @@
 					            </div> 
 					            <div class="modal-body">
 					            	<input type="hidden" name="user" value="<?php echo $this->session->userdata('username'); ?>">
-					            	<input type="hidden" name="id_cetak" id="id_cetak">
-					            	<input type="hidden" name="id_percetakan" id="id_percetakan">
+					            	<input type="hidden" name="id_cetak" id="id_cetak" value="<?php echo $v->id_cetak; ?>">
+					            	<input type="hidden" name="id_percetakan" id="id_percetakan" value="<?php echo $v->id_percetakan; ?>">
 					            	<!-- TANGGAL -->
 					            	<div class="row"> 
 					                <div class="col-md-12" style="padding-bottom: 10px;"> 
@@ -135,9 +139,8 @@
 															<label class="control-label col-md-2" style="padding-top: 7px; padding-left: 0px;">Tanggal</label>
 															<div class="col-md-10" style="padding: 0px;">
 																<div class="input-group">
-																	<input id="tanggal-old" type="hidden" name="tanggal-old">
-																	<input type="hidden" id="tanggal" name="tanggal">
-																	<input name="tanggal" type="text" class="form-control" placeholder="Tanggal aktivitas" id="datepicker" disabled>
+																	<input type="hidden" name="tanggal" value="<?php echo $v->tanggal; ?>" >
+																	<input name="" type="text" class="form-control" id="tanggal" readonly placeholder="<?php echo $tgl; ?>" >
 																	<span class="input-group-addon bg-custom b-0 text-white"><i class="icon-calender"></i></span>
 																</div>
 															</div>
@@ -149,14 +152,16 @@
 					                <div class="col-md-6"> 
 					                  <div class="form-group"> 
 					                    <label  class="control-label">Nama Koran</label>
-					                    <input id="nama_koran-old" type="hidden" name="nama_koran-old">
-															<select name="nama_koran" id="nama_koran-edit" class="form-control select2 select2-hidden-accessible" data-style="btn-white btn-white" required>
+					                    <input id="nama_koran-old" type="hidden" name="nama_koran-old" value="<?php echo $v->nama_koran; ?>">
+															<select name="nama_koran" id="nama_koran-edit" class="selectpicker" data-style="btn-white btn-white" required>
 					                    	<?php
-					                    	foreach ($data_pre_cetak as $v) {
-					                    		if ($v->tanggal == date('Y-m-d')) {
+					                    	foreach ($data_pre_cetak as $x) {
+					                    		if ($v->tanggal == $x->tanggal) {
 					                    			$empty_today = FALSE;
 					                    	?>
-					                    	<option id="<?php echo $v->nama_koran; ?>-selected" value="<?php echo $v->nama_koran; ?>"><?php echo $v->nama_koran; ?></option>
+					                    	<option value="<?php echo $x->nama_koran; ?>" <?php if ($v->nama_koran == $x->nama_koran) {
+					                    		echo "selected";
+					                    	} ?> ><?php echo $x->nama_koran; ?></option>
 					                    	<?php
 					                    		}
 					                    	}
@@ -167,8 +172,8 @@
 					                <div class="col-md-6"> 
 					                  <div class="form-group"> 
 					                    <label  class="control-label">Sesi</label>
-					                    <input type="hidden" id="sesi-old" name="sesi-old">
-					                    <input id="sesi-edit" name="sesi" type="number" class="form-control"  placeholder="Sesi ke-" required> 
+					                    <input type="hidden" id="sesi-old" name="sesi-old" value="<?php echo $v->sesi; ?>">
+					                    <input id="sesi-edit" name="sesi" type="number" value="<?php echo $v->sesi; ?>" class="form-control"  placeholder="Sesi ke-" required> 
 					                  </div> 
 					                </div> 
 					              </div>
@@ -177,17 +182,25 @@
 					                <div class="col-md-6"> 
 					                  <div class="form-group"> 
 					                    <label class="control-label">Waktu Mulai</label> 
-					                    <div class="input-group clockpicker " data-placement="top" data-align="top" >
-																<input id="waktu_mulai-edit" name="waktu_mulai" type="text" class="form-control" placeholder="Waktu Mulai Pekerjaan" disabled>
+					                    <div class="input-group" data-placement="top" data-align="top" >
+																<input id="waktu_mulai-edit" name="waktu_mulai" type="text" class="form-control" readonly value="<?php if ($v->status == "Menunggu") {
+																	echo "-";
+																} else {
+																	echo substr($v->jam_masuk_cetak,0,5);
+																} ?>" >
 																<span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
 															</div>
-					                  </div> 
+					                  </div>
 					                </div> 
 					                <div class="col-md-6"> 
 					                  <div class="form-group"> 
 					                    <label data-placement="top" class="control-label">Waktu Selesai</label> 
-					                    <div class="input-group clockpicker " data-placement="top" data-align="top" >
-																<input id="waktu_selesai-edit" name="waktu_selesai" type="text" class="form-control" placeholder="Waktu Selesai Pekerjaan" disabled >
+					                    <div class="input-group" data-placement="top" data-align="top" >
+																<input id="waktu_selesai-edit" name="waktu_selesai" type="text" class="form-control" placeholder="Waktu Selesai Pekerjaan" readonly value="<?php if ($v->status != "Selesai") {
+																	echo "-";
+																} else {
+																	echo substr($v->jam_selesai_cetak,0,5);
+																} ?>" >
 																<span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
 															</div>
 					                  </div> 
@@ -198,16 +211,22 @@
 					                <div class="col-md-6"> 
 					                  <div class="form-group"> 
 					                    <label  class="control-label">Jumlah Cetak</label> 
-					                    <input id="jumlah_cetak-edit" name="jumlah_cetak" type="text" class="form-control"  placeholder="Contoh : 500" required> 
+					                    <input id="jumlah_cetak-edit" name="jumlah_cetak" type="text" class="form-control" value="<?php echo $v->jumlah_cetak; ?>"  placeholder="Contoh : 500" required> 
 					                  </div> 
 					                </div> 
 					                <div class="col-md-6"> 
 					                  <div class="form-group"> 
 					                    <label  class="control-label">Status</label>
-																<select id="status-edit" name="status" class="form-control select2 select2-hidden-accessible"  data-style="btn-white btn-white" required>
-																	<option id="Menunggu" value="Menunggu">Menunggu</option>
-																	<option id="Proses" value="Proses">Proses</option>
-																	<option id="Selesai" value="Selesai">Selesai</option>
+																<select id="status-edit" name="status" class="selectpicker"  data-style="btn-white btn-white" required>
+																	<option value="Menunggu" <?php if ($v->status == 'Menunggu') {
+																		echo "selected";
+																	} ?> >Menunggu</option>
+																	<option value="Proses" <?php if ($v->status == 'Proses') {
+																		echo "selected";
+																	} ?> >Proses</option>
+																	<option value="Selesai" <?php if ($v->status == 'Selesai') {
+																		echo "selected";
+																	} ?> >Selesai</option>
 																</select> 
 					                  </div> 
 					                </div> 
@@ -226,7 +245,10 @@
 					        </div>
 				      	<?php echo form_close(); ?>
 				      </div>
-
+			      	<?php
+			      	}
+			      	?>
+				     	
             <table id="datatable" class="table table-striped table-bordered">
               <thead>
                 <tr>
@@ -292,8 +314,10 @@
                   </td>
                   <td>
                   	<center>
-                  	<a href="" display="none" title="Edit Aktivitas" onclick="setId('<?php echo $v->id_cetak; ?>', '<?php echo $v->id_percetakan; ?>', '<?php echo $v->tanggal; ?>','<?php echo $v->nama_koran; ?>','<?php echo $v->sesi; ?>','<?php echo $v->jam_masuk_cetak; ?>','<?php echo $v->jam_selesai_cetak; ?>','<?php echo $v->jumlah_cetak; ?>','<?php echo $v->status; ?>','<?php echo substr($v->tanggal,8,2).' '.$nama_bulan[substr($v->tanggal, 5,2)].' '.substr($v->tanggal,0,4); ?>')" data-toggle="modal" data-target="#edit-proses"><i style="font-size: 20px;" class=" md-create"></i></a>
+                  	<a href="" display="none" title="Edit Aktivitas"  data-toggle="modal" data-target="#edit-proses-<?php echo $v->id_cetak; ?>"><i style="font-size: 20px;" class=" md-create"></i></a>
                   	<!--
+                  		onclick="setId('<?php echo $v->id_cetak; ?>', '<?php echo $v->id_percetakan; ?>', '<?php echo $v->tanggal; ?>','<?php echo $v->nama_koran; ?>','<?php echo $v->sesi; ?>','<?php echo $v->jam_masuk_cetak; ?>','<?php echo $v->jam_selesai_cetak; ?>','<?php echo $v->jumlah_cetak; ?>','<?php echo $v->status; ?>','<?php echo substr($v->tanggal,8,2).' '.$nama_bulan[substr($v->tanggal, 5,2)].' '.substr($v->tanggal,0,4); ?>')"
+
                   		&nbsp;&nbsp;&nbsp;
                   	<a title="Hapus Aktivitas" href="" onclick="return confirm('Apakah Anda yakin ingin menghapus data pengguna atas nama  ?')"><i style="font-size: 20px;" class="ion-trash-a"></i></a>-->
                   	</center>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 17 Okt 2018 pada 07.38
+-- Generation Time: 27 Okt 2018 pada 07.06
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -28,8 +28,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `cetak` (
   `id_cetak` int(11) NOT NULL,
-  `tanggal` date NOT NULL,
-  `nama_koran` varchar(50) NOT NULL,
+  `id_percetakan` int(11) NOT NULL,
+  `username` varchar(50) CHARACTER SET utf8 NOT NULL,
   `sesi` int(1) NOT NULL,
   `jam_masuk_cetak` time NOT NULL,
   `jam_selesai_cetak` time NOT NULL,
@@ -41,15 +41,10 @@ CREATE TABLE `cetak` (
 -- Dumping data untuk tabel `cetak`
 --
 
-INSERT INTO `cetak` (`id_cetak`, `tanggal`, `nama_koran`, `sesi`, `jam_masuk_cetak`, `jam_selesai_cetak`, `status`, `jumlah_cetak`) VALUES
-(1, '2018-10-16', 'Metro Riau', 1, '00:00:00', '00:30:00', 'Selesai', 500),
-(2, '2018-10-16', 'Metro Riau', 2, '00:30:00', '01:00:00', 'Selesai', 450),
-(3, '2018-10-16', 'Metro Riau', 3, '01:00:00', '01:40:00', 'Proses', 420),
-(4, '2018-10-16', 'Haluan Riau', 1, '00:10:00', '00:40:00', 'Selesai', 450),
-(5, '2018-10-16', 'Haluan Riau', 2, '00:40:00', '01:10:00', 'Selesai', 400),
-(6, '2018-10-15', 'Haluan Riau', 1, '00:00:00', '00:25:00', 'Selesai', 480),
-(7, '2018-10-16', 'Haluan Riau', 3, '01:10:00', '01:40:00', 'Proses', 400),
-(8, '2018-10-16', 'Haluan Riau', 4, '01:40:00', '02:10:00', 'Menunggu', 390);
+INSERT INTO `cetak` (`id_cetak`, `id_percetakan`, `username`, `sesi`, `jam_masuk_cetak`, `jam_selesai_cetak`, `status`, `jumlah_cetak`) VALUES
+(1, 10, 'dika', 1, '00:00:00', '00:00:00', 'Menunggu', 450),
+(2, 11, 'dika', 1, '11:46:00', '00:00:00', 'Proses', 450),
+(3, 11, 'dika', 2, '00:00:00', '00:00:00', 'Menunggu', 400);
 
 -- --------------------------------------------------------
 
@@ -59,22 +54,13 @@ INSERT INTO `cetak` (`id_cetak`, `tanggal`, `nama_koran`, `sesi`, `jam_masuk_cet
 
 CREATE TABLE `finishing` (
   `id_finishing` int(11) NOT NULL,
-  `tanggal` date NOT NULL,
-  `nama_koran` varchar(50) NOT NULL,
+  `id_percetakan` int(11) NOT NULL,
+  `username` varchar(50) CHARACTER SET utf8 NOT NULL,
   `jam_masuk_finishing` time NOT NULL,
   `jam_selesai_finishing` time NOT NULL,
   `status` varchar(20) NOT NULL,
   `jumlah_edaran` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `finishing`
---
-
-INSERT INTO `finishing` (`id_finishing`, `tanggal`, `nama_koran`, `jam_masuk_finishing`, `jam_selesai_finishing`, `status`, `jumlah_edaran`) VALUES
-(1, '2018-10-16', 'Metro Riau', '02:00:00', '02:30:00', 'Selesai', 1350),
-(2, '2018-10-16', 'Haluan Riau', '02:00:00', '02:30:00', 'Proses', 1635),
-(5, '2018-10-15', 'Haluan Riau', '03:00:00', '03:50:00', 'Menunggu', 350);
 
 -- --------------------------------------------------------
 
@@ -95,6 +81,7 @@ CREATE TABLE `pengguna` (
 
 INSERT INTO `pengguna` (`username`, `password`, `nama_pengguna`, `hak_akses`) VALUES
 ('admin', '21232f297a57a5a743894a0e4a801fc3', 'Administrator', 'Admin'),
+('bayu', 'a430e06de5ce438d499c2e4063d60fd6', 'Bayu Sugara', 'Pre Cetak'),
 ('dian', 'f97de4a9986d216a6e0fea62b0450da9', 'A. D. Dian Kurniawan', 'Pimpinan'),
 ('dika', 'e9ce15bcebcedde2cb3cf9fe8f84fc0c', 'Mahardika Kharisma Adjie', 'Cetak'),
 ('rizki', '3e089c076bf1ec3a8332280ee35c28d4', 'Rizki Trybudiman', 'Finishing'),
@@ -112,6 +99,21 @@ CREATE TABLE `percetakan` (
   `nama_koran` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `percetakan`
+--
+
+INSERT INTO `percetakan` (`id_percetakan`, `tanggal`, `nama_koran`) VALUES
+(1, '2018-10-18', 'Metro Riau'),
+(3, '2018-10-18', 'Haluan Riau'),
+(4, '2018-10-17', 'Haluan Riau'),
+(8, '2018-10-24', 'Metro Riau'),
+(10, '2018-10-25', 'Metro Riau'),
+(11, '2018-10-26', 'Metro Riau'),
+(12, '2018-10-26', 'Haluan Riau'),
+(13, '2018-10-27', 'Metro Riau'),
+(14, '2018-10-27', 'Haluan Riau');
+
 -- --------------------------------------------------------
 
 --
@@ -120,8 +122,8 @@ CREATE TABLE `percetakan` (
 
 CREATE TABLE `pre_cetak` (
   `id_pre_cetak` int(11) NOT NULL,
-  `tanggal` date NOT NULL,
-  `nama_koran` varchar(50) NOT NULL,
+  `id_percetakan` int(11) NOT NULL,
+  `username` varchar(50) CHARACTER SET utf8 NOT NULL,
   `sesi` int(1) NOT NULL,
   `jam_masuk_pre_cetak` time NOT NULL,
   `jam_selesai_pre_cetak` time NOT NULL,
@@ -134,15 +136,26 @@ CREATE TABLE `pre_cetak` (
 -- Dumping data untuk tabel `pre_cetak`
 --
 
-INSERT INTO `pre_cetak` (`id_pre_cetak`, `tanggal`, `nama_koran`, `sesi`, `jam_masuk_pre_cetak`, `jam_selesai_pre_cetak`, `sumber_berita`, `penerima_berita`, `status`) VALUES
-(1, '2018-10-15', 'Metro Riau', 1, '22:00:00', '22:30:00', 'Nasional', 'Dika', 'Menunggu'),
-(2, '2018-10-15', 'Metro Riau', 2, '22:30:00', '23:00:00', 'Olahraga', 'Zul', 'Proses'),
-(3, '2018-10-15', 'Metro Riau', 3, '23:00:00', '23:30:00', 'Politik', 'Dian', 'Selesai'),
-(4, '2018-10-14', 'Haluan Riau', 1, '19:00:00', '20:00:00', 'Olahraga', 'Bayu', 'Selesai'),
-(5, '2018-10-15', 'Haluan Riau', 1, '20:15:00', '20:45:00', 'Nasional', 'Beno', 'Selesai'),
-(6, '2018-10-15', 'Haluan Riau', 2, '22:30:00', '23:00:00', 'Masyarakat', 'Rizki', 'Selesai'),
-(7, '2018-10-15', 'Haluan Riau', 3, '23:00:00', '23:25:00', 'Olahraga', 'Wirya', 'Selesai'),
-(8, '2018-10-12', 'Haluan Riau', 1, '00:00:00', '00:30:00', 'Nasional', 'Deni', 'Proses');
+INSERT INTO `pre_cetak` (`id_pre_cetak`, `id_percetakan`, `username`, `sesi`, `jam_masuk_pre_cetak`, `jam_selesai_pre_cetak`, `sumber_berita`, `penerima_berita`, `status`) VALUES
+(1, 1, 'zul', 1, '02:04:09', '21:30:00', 'Olahraga', 'Zul', 'Proses'),
+(2, 1, 'zul', 2, '21:30:00', '22:00:00', 'Nasional', 'Rizki', 'Menunggu'),
+(3, 3, 'zul', 1, '00:00:00', '01:00:00', 'Nasional', 'Wirya', 'Menunggu'),
+(4, 3, 'zul', 2, '00:00:00', '00:00:00', 'Masyarakat', 'Beno', 'Menunggu'),
+(5, 3, 'zul', 3, '20:33:37', '00:00:00', 'Olahraga', 'Rizki', 'Proses'),
+(6, 4, 'zul', 1, '17:45:18', '17:45:27', 'Olahraga', 'Beno', 'Selesai'),
+(7, 8, 'zul', 1, '00:38:10', '01:05:19', 'Nasional', 'Dian', 'Selesai'),
+(8, 8, 'zul', 2, '00:43:45', '01:05:25', 'Olahraga', 'Rizki', 'Selesai'),
+(10, 10, 'zul', 1, '01:10:20', '01:11:48', 'Nasional', 'Nurhayati', 'Selesai'),
+(11, 10, 'zul', 2, '01:20:44', '00:00:00', 'Olahraga', 'Dini', 'Proses'),
+(12, 10, 'bayu', 3, '20:44:04', '00:00:00', 'Masyarakat', 'Fitrah', 'Proses'),
+(13, 11, 'zul', 1, '16:39:54', '18:46:07', 'Nasional', 'Beno', 'Selesai'),
+(14, 11, 'zul', 2, '18:46:13', '00:00:00', 'Masyarakat', 'Beno', 'Proses'),
+(15, 11, 'zul', 3, '04:04:33', '00:00:00', 'Olahraga', 'Rizki', 'Proses'),
+(16, 12, 'zul', 1, '23:02:51', '04:03:58', 'Nasional', 'Beno', 'Selesai'),
+(17, 12, 'zul', 2, '04:04:15', '04:04:28', 'Olahraga', 'Rizki', 'Selesai'),
+(18, 13, 'zul', 1, '04:05:13', '00:00:00', 'Olahraga', 'Dini', 'Proses'),
+(19, 13, 'zul', 2, '00:00:00', '00:00:00', 'Masyarakat', 'Beno', 'Menunggu'),
+(20, 14, 'zul', 1, '00:00:00', '00:00:00', 'Nasional', 'Beno', 'Menunggu');
 
 --
 -- Indexes for dumped tables
@@ -152,13 +165,17 @@ INSERT INTO `pre_cetak` (`id_pre_cetak`, `tanggal`, `nama_koran`, `sesi`, `jam_m
 -- Indexes for table `cetak`
 --
 ALTER TABLE `cetak`
-  ADD PRIMARY KEY (`id_cetak`);
+  ADD PRIMARY KEY (`id_cetak`),
+  ADD KEY `fk2` (`id_percetakan`),
+  ADD KEY `fk5` (`username`);
 
 --
 -- Indexes for table `finishing`
 --
 ALTER TABLE `finishing`
-  ADD PRIMARY KEY (`id_finishing`);
+  ADD PRIMARY KEY (`id_finishing`),
+  ADD KEY `fk3` (`id_percetakan`),
+  ADD KEY `fk6` (`username`);
 
 --
 -- Indexes for table `pengguna`
@@ -176,7 +193,9 @@ ALTER TABLE `percetakan`
 -- Indexes for table `pre_cetak`
 --
 ALTER TABLE `pre_cetak`
-  ADD PRIMARY KEY (`id_pre_cetak`);
+  ADD PRIMARY KEY (`id_pre_cetak`),
+  ADD KEY `fk1` (`id_percetakan`),
+  ADD KEY `fk4` (`username`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -186,22 +205,47 @@ ALTER TABLE `pre_cetak`
 -- AUTO_INCREMENT for table `cetak`
 --
 ALTER TABLE `cetak`
-  MODIFY `id_cetak` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_cetak` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `finishing`
 --
 ALTER TABLE `finishing`
-  MODIFY `id_finishing` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_finishing` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `percetakan`
 --
 ALTER TABLE `percetakan`
-  MODIFY `id_percetakan` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_percetakan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `pre_cetak`
 --
 ALTER TABLE `pre_cetak`
-  MODIFY `id_pre_cetak` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_pre_cetak` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+--
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+--
+
+--
+-- Ketidakleluasaan untuk tabel `cetak`
+--
+ALTER TABLE `cetak`
+  ADD CONSTRAINT `fk2` FOREIGN KEY (`id_percetakan`) REFERENCES `percetakan` (`id_percetakan`),
+  ADD CONSTRAINT `fk5` FOREIGN KEY (`username`) REFERENCES `pengguna` (`username`);
+
+--
+-- Ketidakleluasaan untuk tabel `finishing`
+--
+ALTER TABLE `finishing`
+  ADD CONSTRAINT `fk3` FOREIGN KEY (`id_percetakan`) REFERENCES `percetakan` (`id_percetakan`),
+  ADD CONSTRAINT `fk6` FOREIGN KEY (`username`) REFERENCES `pengguna` (`username`);
+
+--
+-- Ketidakleluasaan untuk tabel `pre_cetak`
+--
+ALTER TABLE `pre_cetak`
+  ADD CONSTRAINT `fk1` FOREIGN KEY (`id_percetakan`) REFERENCES `percetakan` (`id_percetakan`),
+  ADD CONSTRAINT `fk4` FOREIGN KEY (`username`) REFERENCES `pengguna` (`username`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
