@@ -126,7 +126,7 @@
 					            </div> 
 					            <div class="modal-body">
 					            	<input type="hidden" name="user" value="<?php echo $this->session->userdata('username'); ?>">
-					            	<input type="hidden" name="id_finishing" id="id_finishing">
+					            	<input type="hidden" name="id_finishing" id="id_finishing" value="<?php echo $v->id_finishing; ?>">
 					            	<input type="hidden" name="id_percetakan" id="id_percetakan" value="<?php echo $v->id_percetakan; ?>">
 					            	<!-- TANGGAL -->
 					            	<div class="row"> 

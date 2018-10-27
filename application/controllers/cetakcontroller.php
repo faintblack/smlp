@@ -106,7 +106,7 @@ class CetakController extends CI_Controller {
 				} else {
 					$this->session->set_flashdata('edit_cetak_0','Data aktivitas tidak berhasil diupdate, silahkan coba lagi');
 					redirect('precetakcontroller/status');
-				}				
+				}
 			}
 
 		$data_c_check = $this->Cetak->get($id_p)->result();

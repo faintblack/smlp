@@ -80,7 +80,7 @@ class FinishingController extends CI_Controller {
 		$bulan = substr($this->input->post('tanggal', TRUE), 0, 2);
 		$tahun = substr($this->input->post('tanggal', TRUE), 6, 4);
 
-		$tanggal_mantap = $tahun.'-'.$bulan.'-'.$tanggal;
+		$tanggal_mantap = $this->input->post('tanggal', TRUE);
 
 		$id_f = array('id_finishing' => $this->input->post('id_finishing', TRUE)); ;
 		$id_p = array('b.id_percetakan' => $this->input->post('id_percetakan', TRUE));
@@ -90,18 +90,31 @@ class FinishingController extends CI_Controller {
 				$data_p = array('tanggal' => $tanggal_mantap, 'nama_koran' => $this->input->post('nama_koran', TRUE));
 				$check_p = $this->Percetakan->get($data_p)->result();
 
-				$data_f = array('id_percetakan' => $check_p[0]->id_percetakan);
+				// CEK APAKAH AKTIVITAS BARU SUDAH ADA PADA TABEL FINISHING
+					$check_f = $this->Finishing->get(array('b.id_percetakan' => $check_p[0]->id_percetakan))->result();
 
-				// GANTI ID PERCETAKAN PADA TABEL FINISHING
-				$update_f = $this->Cetak->update($id_f, $data_f);
-				if ($update_f) {
-					$id_p = array('b.id_percetakan' => $check_p[0]->id_percetakan );
-				} else {
-					$this->session->set_flashdata('edit_finishing_0','Data aktivitas tidak berhasil diupdate, silahkan coba lagi');
-					redirect('precetakcontroller/status');
-				}
+					// JIKA TIDAK ADA DATA AKTIVITAS YANG SAMA PADA TABEL FINISHING
+					if (count($check_f) == 0) {
+						$data_f = array('id_percetakan' => $check_p[0]->id_percetakan);
+
+						// GANTI ID PERCETAKAN PADA TABEL FINISHING
+						$update_f = $this->Finishing->update($id_f, $data_f);
+						if ($update_f) {
+							$id_p = array('b.id_percetakan' => $check_p[0]->id_percetakan );
+						} else {
+							$this->session->set_flashdata('edit_finishing_0','Data aktivitas tidak berhasil diupdate, silahkan coba lagi');
+							redirect('finishingcontroller/status');
+						}
+					} 
+					// JIKA ADA
+					else {
+						$this->session->set_flashdata('edit_finishing_2','Data aktivitas tidak berhasil diupdate, aktivitas sudah diinputkan sebelumnya');
+						redirect('finishingcontroller/status');
+					}				
 			}
+
 		print_r($id_p);exit();
+		
 
 		/*---------------------------------------------------------------*/
 

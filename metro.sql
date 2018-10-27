@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 27 Okt 2018 pada 17.38
+-- Generation Time: 27 Okt 2018 pada 19.12
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -69,7 +69,8 @@ CREATE TABLE `finishing` (
 --
 
 INSERT INTO `finishing` (`id_finishing`, `id_percetakan`, `username`, `jam_masuk_finishing`, `jam_selesai_finishing`, `status`, `jumlah_edaran`) VALUES
-(1, 13, 'rizki', '00:00:00', '00:00:00', 'Menunggu', 1500);
+(1, 14, 'rizki', '00:00:00', '00:00:00', 'Menunggu', 1500),
+(5, 13, 'rizki', '00:00:00', '00:00:00', 'Menunggu', 1600);
 
 -- --------------------------------------------------------
 
@@ -219,7 +220,7 @@ ALTER TABLE `cetak`
 -- AUTO_INCREMENT for table `finishing`
 --
 ALTER TABLE `finishing`
-  MODIFY `id_finishing` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_finishing` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `percetakan`
 --
