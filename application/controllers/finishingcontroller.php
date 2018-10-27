@@ -65,37 +65,15 @@ class FinishingController extends CI_Controller {
 			}
 
 		// INPUT DATA FINISHING
-		$insert = $this->Finishing->insert($data);
+			$insert = $this->Finishing->insert($data);
 
-		if ($insert) {
-			$this->session->set_flashdata('tambah_finishing_1','Aktivitas baru berhasil ditambahkan');
-		} else {
-			$this->session->set_flashdata('tambah_finishing_0','Aktivitas baru tidak berhasil ditambahkan, silahkan coba lagi');
-		}
-		redirect('finishingcontroller/status');
-
-		/*-----------------------------------------------------------*/
-
-		$data = array('tanggal' => $tanggal_mantap, 'nama_koran' => $this->input->post('nama_koran', TRUE), 'jam_masuk_finishing' => $mulai, 'jam_selesai_finishing' => $selesai, 'jumlah_edaran' => $this->input->post('jumlah_edaran', TRUE), 'status' => $this->input->post('status', TRUE));
-		
-		// JIKA DATA TELAH DIINPUTKAN SEBELUMNYA
-			$where = array('tanggal' => $tanggal_mantap, 'nama_koran' => $this->input->post('nama_koran', TRUE));
-
-			$check = $this->Finishing->get($where)->result();
-			
-			if (count($check) != 0) {
-				$this->session->set_flashdata('tambah_finishing_2','Aktivitas baru tidak berhasil ditambahkan, aktivitas sudah diinputkan sebelumnya');
-				redirect('finishingcontroller/status');
+			if ($insert) {
+				$this->session->set_flashdata('tambah_finishing_1','Aktivitas baru berhasil ditambahkan');
+			} else {
+				$this->session->set_flashdata('tambah_finishing_0','Aktivitas baru tidak berhasil ditambahkan, silahkan coba lagi');
 			}
-
-		$insert = $this->Finishing->insert($data);
-
-		if ($insert) {
-			$this->session->set_flashdata('tambah_finishing_1','Aktivitas baru berhasil ditambahkan');
-		} else {
-			$this->session->set_flashdata('tambah_finishing_0','Aktivitas baru tidak berhasil ditambahkan, silahkan coba lagi');
-		}
-		redirect('finishingcontroller/status');
+			redirect('finishingcontroller/status');
+ 
 	}
 
 	public function editProses(){
