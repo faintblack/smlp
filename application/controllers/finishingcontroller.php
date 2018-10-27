@@ -73,7 +73,6 @@ class FinishingController extends CI_Controller {
 				$this->session->set_flashdata('tambah_finishing_0','Aktivitas baru tidak berhasil ditambahkan, silahkan coba lagi');
 			}
 			redirect('finishingcontroller/status');
- 
 	}
 
 	public function editProses(){
@@ -82,10 +81,29 @@ class FinishingController extends CI_Controller {
 		$tahun = substr($this->input->post('tanggal', TRUE), 6, 4);
 
 		$tanggal_mantap = $tahun.'-'.$bulan.'-'.$tanggal;
-		$mulai = $this->input->post('waktu_mulai', TRUE).':00';
-		$selesai = $this->input->post('waktu_selesai', TRUE).':00';
 
-		$id = array('id_finishing' => $this->input->post('id_finishing', TRUE)); ;
+		$id_f = array('id_finishing' => $this->input->post('id_finishing', TRUE)); ;
+		$id_p = array('b.id_percetakan' => $this->input->post('id_percetakan', TRUE));
+
+		// JIKA GANTI NAMA KORAN (BAGAIMANA JIKA NAMA KORAN BARU SUDAH DIINPUTKAN)
+			if ($this->input->post('nama_koran-old', TRUE) != $this->input->post('nama_koran', TRUE)) {
+				$data_p = array('tanggal' => $tanggal_mantap, 'nama_koran' => $this->input->post('nama_koran', TRUE));
+				$check_p = $this->Percetakan->get($data_p)->result();
+
+				$data_f = array('id_percetakan' => $check_p[0]->id_percetakan);
+
+				// GANTI ID PERCETAKAN PADA TABEL FINISHING
+				$update_f = $this->Cetak->update($id_f, $data_f);
+				if ($update_f) {
+					$id_p = array('b.id_percetakan' => $check_p[0]->id_percetakan );
+				} else {
+					$this->session->set_flashdata('edit_finishing_0','Data aktivitas tidak berhasil diupdate, silahkan coba lagi');
+					redirect('precetakcontroller/status');
+				}
+			}
+		print_r($id_p);exit();
+
+		/*---------------------------------------------------------------*/
 
 		$data = array('tanggal' => $tanggal_mantap, 'nama_koran' => $this->input->post('nama_koran', TRUE), 'jam_masuk_finishing' => $mulai, 'jam_selesai_finishing' => $selesai, 'jumlah_edaran' => $this->input->post('jumlah_edaran', TRUE), 'status' => $this->input->post('status', TRUE));
 

@@ -125,7 +125,9 @@
 					              <h4 class="modal-title"><strong>Edit Aktivitas Finishing</strong> </h4> 
 					            </div> 
 					            <div class="modal-body">
+					            	<input type="hidden" name="user" value="<?php echo $this->session->userdata('username'); ?>">
 					            	<input type="hidden" name="id_finishing" id="id_finishing">
+					            	<input type="hidden" name="id_percetakan" id="id_percetakan" value="<?php echo $v->id_percetakan; ?>">
 					            	<!-- TANGGAL -->
 					            	<div class="row"> 
 					                <div class="col-md-12" style="padding-bottom: 10px;"> 
@@ -133,8 +135,8 @@
 															<label class="control-label col-md-3" style="padding-top: 7px; padding-left: 0px;">Tanggal</label>
 															<div class="col-md-9">
 																<div class="input-group">
-																	<input id="tanggal-old" type="hidden" name="tanggal-old">
-																	<input name="tanggal" type="text" class="form-control" placeholder="Tanggal aktivitas" id="datepicker" required>
+																	<input type="hidden" name="tanggal" value="<?php echo $v->tanggal; ?>" >
+																	<input name="" type="text" class="form-control" id="tanggal" placeholder="<?php echo $tgl; ?>" readonly>
 																	<span class="input-group-addon bg-custom b-0 text-white"><i class="icon-calender"></i></span>
 																</div>
 															</div>
@@ -147,8 +149,21 @@
 					                  <div class="form-group"> 
 					                    <label class="control-label col-md-3" style="padding-top: 7px; padding-left: 0px;">Nama Koran</label>
 					                    <div class="col-md-9">
-					                    	<input id="nama_koran-old" type="hidden" name="nama_koran-old">
-																<input id="nama_koran-edit" name="nama_koran" type="text" class="form-control"  placeholder="Contoh : Metro Riau" required> 
+					                    	<input id="nama_koran-old" type="hidden" name="nama_koran-old" value="<?php echo $v->nama_koran; ?>">
+																<select name="nama_koran" id="nama_koran-edit" class="selectpicker" data-style="btn-white btn-white" required>
+					                    	<?php
+					                    	foreach ($data_cetak as $x) {
+					                    		if ($v->tanggal == $x->tanggal) {
+					                    			$empty_today = FALSE;
+					                    	?>
+					                    	<option value="<?php echo $x->nama_koran; ?>" <?php if ($v->nama_koran == $x->nama_koran) {
+					                    		echo "selected";
+					                    	} ?> ><?php echo $x->nama_koran; ?></option>
+					                    	<?php
+					                    		}
+					                    	}
+					                    	?>																	
+															</select> 
 					                    </div>
 					                  </div> 
 					                </div>
@@ -158,8 +173,12 @@
 					                <div class="col-md-6"> 
 					                  <div class="form-group"> 
 					                    <label class="control-label">Waktu Mulai</label> 
-					                    <div class="input-group clockpicker " data-placement="top" data-align="top" >
-																<input id="waktu_mulai-edit" name="waktu_mulai" type="text" class="form-control" placeholder="Waktu Mulai Pekerjaan" required>
+					                    <div class="input-group" data-placement="top" data-align="top" >
+																<input id="waktu_mulai-edit" name="waktu_mulai" type="text" class="form-control" readonly value="<?php if ($v->status == "Menunggu") {
+																	echo "-";
+																} else {
+																	echo substr($v->jam_masuk_cetak,0,5);
+																} ?>">
 																<span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
 															</div>
 					                  </div> 
@@ -167,8 +186,12 @@
 					                <div class="col-md-6"> 
 					                  <div class="form-group"> 
 					                    <label data-placement="top" class="control-label">Waktu Selesai</label> 
-					                    <div class="input-group clockpicker " data-placement="top" data-align="top" >
-																<input id="waktu_selesai-edit" name="waktu_selesai" type="text" class="form-control" placeholder="Waktu Mulai Pekerjaan" required >
+					                    <div class="input-group " data-placement="top" data-align="top" >
+																<input id="waktu_selesai-edit" name="waktu_selesai" type="text" class="form-control" readonly value="<?php if ($v->status != "Selesai") {
+																	echo "-";
+																} else {
+																	echo substr($v->jam_selesai_cetak,0,5);
+																} ?>" >
 																<span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
 															</div>
 					                  </div> 
@@ -179,17 +202,22 @@
 					                <div class="col-md-6"> 
 					                  <div class="form-group"> 
 					                    <label  class="control-label">Jumlah Edaran</label> 
-					                    <input id="jumlah_edaran-edit" name="jumlah_edaran" type="text" class="form-control"  placeholder="Contoh : 500" required> 
+					                    <input id="jumlah_edaran-edit" name="jumlah_edaran" type="text" class="form-control" value="<?php echo $v->jumlah_edaran ?>" placeholder="Contoh : 500" required> 
 					                  </div> 
 					                </div> 
 					                <div class="col-md-6"> 
 					                  <div class="form-group"> 
 					                    <label  class="control-label">Status</label>
-																<select id="status-edit" name="status" class="form-control select2 select2-hidden-accessible"  data-style="btn-white btn-white" required>
-						                    	<option value="" disabled selected>Pilih Status Aktivitas</option>
-																	<option id="Menunggu" value="Menunggu">Menunggu</option>
-																	<option id="Proses" value="Proses">Proses</option>
-																	<option id="Selesai" value="Selesai">Selesai</option>
+																<select id="status-edit" name="status" class="selectpicker"  data-style="btn-white btn-white" required>
+																	<option value="Menunggu" <?php if ($v->status == 'Menunggu') {
+																		echo "selected";
+																	} else { echo "disabled"; } ?> >Menunggu</option>
+																	<option value="Proses" <?php if ($v->status == 'Proses') {
+																		echo "selected";
+																	} else if($v->status == 'Selesai'){ echo "disabled"; } ?> >Proses</option>
+																	<option value="Selesai" <?php if ($v->status == 'Selesai') {
+																		echo "selected";
+																	} else if($v->status == 'Menunggu'){ echo "disabled"; } ?> >Selesai</option>
 																</select> 
 					                  </div> 
 					                </div> 

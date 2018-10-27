@@ -99,7 +99,7 @@ class CetakController extends CI_Controller {
 
 				$data_c = array('id_percetakan' => $check_p[0]->id_percetakan);
 
-				// UPDATE ID PERCETAKAN
+				// GANTI ID PERCETAKAN PADA TABEL CETAK
 				$update_c = $this->Cetak->update($id_c, $data_c);
 				if ($update_c) {
 					$id_p = array('b.id_percetakan' => $check_p[0]->id_percetakan );
