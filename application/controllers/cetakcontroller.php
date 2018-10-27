@@ -123,11 +123,10 @@ class CetakController extends CI_Controller {
 
 				case 'Selesai':
 					$selesai = date('H:i:s');
-					$data = array('id_percetakan' => $id_p['b.id_percetakan'], 'sesi' => $this->input->post('sesi', TRUE), 'jam_selesai_pre_cetak' => $selesai, 'jumlah_cetak' => $this->input->post('jumlah_cetak', TRUE), 'status' => $this->input->post('status', TRUE), 'username' => $this->input->post('user', TRUE));
+					$data = array('id_percetakan' => $id_p['b.id_percetakan'], 'sesi' => $this->input->post('sesi', TRUE), 'jam_selesai_cetak' => $selesai, 'jumlah_cetak' => $this->input->post('jumlah_cetak', TRUE), 'status' => $this->input->post('status', TRUE), 'username' => $this->input->post('user', TRUE));
 				break;
 			}
-		print_r($this->input->post('sesi', TRUE));exit();
-
+		
 		// UPDATE DATA CETAK
 			// JIKA SESI DIUBAH
 			if ($this->input->post('sesi-old', TRUE) != $this->input->post('sesi', TRUE)) {
@@ -135,11 +134,26 @@ class CetakController extends CI_Controller {
 					foreach ($data_c_check as $v) {					
 						if ($v->sesi == $this->input->post('sesi', TRUE)) {
 							$this->session->set_flashdata('edit_cetak_2','Data aktivitas tidak berhasil diupdate, sesi sudah diinputkan sebelumnya');
-							redirect('precetakcontroller/status');
+							redirect('cetakcontroller/status');
 						}
 					}
 
 				$update_c = $this->Cetak->update($id_c, $data);
+				if ($update_c) {
+					$this->session->set_flashdata('edit_cetak_1','Data aktivitas berhasil diupdate');
+				} else {
+					$this->session->set_flashdata('edit_cetak_0','Data aktivitas tidak berhasil diupdate, silahkan coba lagi');
+				}
+				redirect('cetakcontroller/status');
+
+			} else {
+				$update_c = $this->Cetak->update($id_c, $data);
+				if ($update_c) {
+					$this->session->set_flashdata('edit_cetak_1','Data aktivitas berhasil diupdate');
+				} else {
+					$this->session->set_flashdata('edit_cetak_0','Data aktivitas tidak berhasil diupdate, silahkan coba lagi');
+				}
+				redirect('cetakcontroller/status');
 			}
 
 		/*-------------------------------------------------------------*/
@@ -169,10 +183,10 @@ class CetakController extends CI_Controller {
 	}
 
 	public function laporan(){
-		$cetak = $this->Cetak->selectGroup()->result();
-		$cetak_all = $this->Cetak->select()->result();
+		$percetakan = $this->Percetakan->select()->result();
+		$cetak = $this->Cetak->select()->result();
 
-		$data = array('data_cetak' => $cetak, 'data_cetak_all' => $cetak_all);
+		$data = array('data_cetak' => $cetak, 'data_percetakan' => $percetakan);
 		$this->template->load('static','cetak/laporan', $data);
 	}
 

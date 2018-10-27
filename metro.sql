@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 27 Okt 2018 pada 07.06
+-- Generation Time: 27 Okt 2018 pada 10.41
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -43,8 +43,9 @@ CREATE TABLE `cetak` (
 
 INSERT INTO `cetak` (`id_cetak`, `id_percetakan`, `username`, `sesi`, `jam_masuk_cetak`, `jam_selesai_cetak`, `status`, `jumlah_cetak`) VALUES
 (1, 10, 'dika', 1, '00:00:00', '00:00:00', 'Menunggu', 450),
-(2, 11, 'dika', 1, '11:46:00', '00:00:00', 'Proses', 450),
-(3, 11, 'dika', 2, '00:00:00', '00:00:00', 'Menunggu', 400);
+(2, 11, 'dika', 1, '11:46:00', '13:57:36', 'Selesai', 450),
+(3, 11, 'dika', 2, '13:56:13', '00:00:00', 'Proses', 420),
+(4, 14, 'dika', 1, '00:00:00', '00:00:00', 'Menunggu', 500);
 
 -- --------------------------------------------------------
 
@@ -205,7 +206,7 @@ ALTER TABLE `pre_cetak`
 -- AUTO_INCREMENT for table `cetak`
 --
 ALTER TABLE `cetak`
-  MODIFY `id_cetak` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_cetak` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `finishing`
 --

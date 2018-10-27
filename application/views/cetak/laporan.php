@@ -25,17 +25,15 @@
 	            <?php
 	            $nama_bulan = array('01' => 'Januari', '02' => 'Februari', '03' => 'Maret', '04' => 'April', '05' => 'Mei', '06' => 'Juni', '07' => 'Juli', '08' => 'Agustus', '09' => 'September', '10' => 'Oktober', '11' => 'November', '12' => 'Desember', );
 	            $nama_hari = array('Monday' => 'Senin', 'Tuesday' => 'Selasa', 'Wednesday' => 'Rabu', 'Thursday' => 'Kamis', 'Friday' => "Jum'at", 'Saturday' => 'Sabtu', 'Sunday' => 'Minggu');
-	            foreach ($data_cetak as $v) {
+	            foreach ($data_percetakan as $v) {
 	            	$tanggal = substr($v->tanggal, 8,2);
 								$bulan = $nama_bulan[substr($v->tanggal, 5,2)] ;
 								$tahun = substr($v->tanggal, 0,4);
-								$waktu_mulai = substr($v->jam_masuk_cetak, 0,5);
-								$waktu_selesai = substr($v->jam_selesai_cetak, 0,5);
 								$hari = $nama_hari[date('l', strtotime($v->tanggal))]; 
 
 								$tanggal_mantap = $tanggal . " " . $bulan . " " . $tahun;
 	            ?>
-		            <div id="detail-cetak-<?php echo $v->id_cetak; ?>" class="modal fade bs-example-modal-lg-<?php echo $v->id_cetak; ?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+		            <div id="detail-cetak-<?php echo $v->id_percetakan; ?>" class="modal fade bs-example-modal-lg-<?php echo $v->id_percetakan; ?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
 		              <div class="modal-dialog modal-lg">
 		                <div class="modal-content">
 		                  <div class="modal-header">
@@ -90,26 +88,41 @@
 																		<th><center>Waktu Mulai</center></th>
 																		<th><center>Waktu Selesai</center></th>
 																		<th><center>Jumlah Cetak</center></th>
+																		<th><center>Status</center></th>
 																	</tr>
 																</thead>
 																<tbody>
 																	<?php
 																	$no = 1;
-																	foreach ($data_cetak_all as $x) {
-																		if (($v->tanggal == $x->tanggal) && ($v->nama_koran == $x->nama_koran)) {
+																	foreach ($data_cetak as $x) {
+																		if ($v->id_percetakan == $x->id_percetakan) {
+																			$empty_c = FALSE;
 																			$waktu_mulai = substr($x->jam_masuk_cetak, 0, 5);
 																			$waktu_selesai = substr($x->jam_selesai_cetak, 0, 5);
 																	?>
 																	<tr>
 																		<th scope="row"><center><?php echo $no; ?></center></th>
 																		<td><center><?php echo $x->sesi; ?></center></td>
-																		<td><center><?php echo $waktu_mulai; ?></center></td>
-																		<td><center><?php echo $waktu_selesai; ?></center></td>
+																		<td><center><?php if ($x->status == 'Menunggu') {
+																			echo "-";
+																		} else { echo $waktu_mulai; } ?></center></td>
+																		<td><center><?php if ($x->status != 'Selesai') {
+																			echo "-";
+																		} else { echo $waktu_selesai; }  ?></center></td>
 																		<td><center><?php echo $x->jumlah_cetak; ?></center></td>
+																		<td><center><?php echo $x->status; ?></center></td>
 																	</tr>
 																	<?php
 																		$no++;
-																		}																
+																		}									
+																	}
+
+																	if (!isset($empty_c)) {
+																	?>
+																	<tr>
+																		<th colspan="6"><center>Belum ada data aktivitas divisi cetak</center></th>
+																	</tr>
+																	<?php
 																	}
 																	?>
 																</tbody>
@@ -122,6 +135,7 @@
 		              </div>
 		            </div>
 	            <?php
+	            $empty_c = null;
 	            }
 	            ?>
 
@@ -139,12 +153,10 @@
               	<?php
               	$no = 1;
               	$nama_bulan = array('01' => 'Januari', '02' => 'Februari', '03' => 'Maret', '04' => 'April', '05' => 'Mei', '06' => 'Juni', '07' => 'Juli', '08' => 'Agustus', '09' => 'September', '10' => 'Oktober', '11' => 'November', '12' => 'Desember', );
-              	foreach ($data_cetak as $v) {
+              	foreach ($data_percetakan as $v) {
               		$tanggal = substr($v->tanggal, 8,2);
 									$bulan = $nama_bulan[substr($v->tanggal, 5,2)] ;
 									$tahun = substr($v->tanggal, 0,4);
-									$waktu_mulai = substr($v->jam_masuk_cetak, 0,5);
-									$waktu_selesai = substr($v->jam_selesai_cetak, 0,5);
 									$tanggal_mantap = $tanggal . " " . $bulan . " " . $tahun;
               	?>
               	<tr>
@@ -153,9 +165,9 @@
                   <td><center><?php echo $v->nama_koran; ?></center></td>
                   <td>
                   	<center>
-                  	<a href="" title="Detail Laporan" data-toggle="modal" data-target=".bs-example-modal-lg-<?php echo $v->id_cetak ?>"><i style="font-size: 20px;" class=" md-remove-red-eye"></i></a>
+                  	<a href="" title="Detail Laporan" data-toggle="modal" data-target=".bs-example-modal-lg-<?php echo $v->id_percetakan; ?>"><i style="font-size: 20px;" class=" md-remove-red-eye"></i></a>
                   		&nbsp;&nbsp;&nbsp;
-                  	<a title="Cetak Laporan" href="" onclick="printCetak('<?php echo $v->id_cetak; ?>')"><i style="font-size: 20px;" class="md-print"></i></a>
+                  	<a title="Cetak Laporan" href="" onclick="printCetak('<?php echo $v->id_percetakan; ?>')"><i style="font-size: 20px;" class="md-print"></i></a>
                   	</center>
                   </td>
                 </tr>
