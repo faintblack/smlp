@@ -13,6 +13,9 @@ date_default_timezone_set("Asia/Jakarta");
 
 	<title>Sistem Monitoring Laporan Percetakan</title>
 
+	<!-- Sweet Alert -->
+	<link href="<?=base_url();?>assets/plugins/bootstrap-sweetalert/sweet-alert.css" rel="stylesheet" type="text/css">
+
 	<!-- DataTables -->
 	<link href="<?=base_url();?>assets/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
 	<link href="<?=base_url();?>assets/plugins/datatables/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css"/>
@@ -310,6 +313,10 @@ date_default_timezone_set("Asia/Jakarta");
 
 	<!-- PARSLEY -->
 	<script type="text/javascript" src="<?=base_url();?>assets/plugins/parsleyjs/parsley.min.js"></script>
+
+	<!-- Sweet-Alert  -->
+	<script src="<?=base_url();?>assets/plugins/bootstrap-sweetalert/sweet-alert.min.js"></script>
+	<script src="<?=base_url();?>assets/pages/jquery.sweet-alert.init.js"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function () {

@@ -120,7 +120,7 @@
 			      	?>
 			      	<div id="edit-proses-<?php echo $v->id_cetak; ?>" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 				      	<?php 
-				      	$attribute = array('data-parsley-validate' => '', 'novalidate' => '', 'role' => 'form');
+				      	$attribute = array('data-parsley-validate' => '', 'novalidate' => '', 'role' => 'form', 'id' => 'form_edit');
 				      	echo form_open('cetakcontroller/editproses'); ?>
 				      		<div class="modal-dialog"> 
 					          <div class="modal-content"> 
@@ -220,13 +220,13 @@
 																<select id="status-edit" name="status" class="selectpicker"  data-style="btn-white btn-white" required>
 																	<option value="Menunggu" <?php if ($v->status == 'Menunggu') {
 																		echo "selected";
-																	} ?> >Menunggu</option>
+																	} else { echo "disabled"; } ?> >Menunggu</option>
 																	<option value="Proses" <?php if ($v->status == 'Proses') {
 																		echo "selected";
-																	} ?> >Proses</option>
+																	} else if($v->status == 'Selesai'){ echo "disabled"; } ?> >Proses</option>
 																	<option value="Selesai" <?php if ($v->status == 'Selesai') {
 																		echo "selected";
-																	} ?> >Selesai</option>
+																	} else if($v->status == 'Menunggu'){ echo "disabled"; } ?> >Selesai</option>
 																</select> 
 					                  </div> 
 					                </div> 
@@ -415,6 +415,26 @@
 	function setDate($tanggal){
 		document.getElementById('datepicker-autoclose').setAttribute('placeholder', $tanggal);
 	}
+
+	$(document).ready(function(){
+		$('#form_edit').on('submit',function(e) {
+			e.preventDefault();
+	    var form = $(this).parents('form');
+	    swal({
+        title: "Apakah anda yakin proses telah dimulai ?",
+	      type: "warning",
+	      showCancelButton: true,
+	      confirmButtonColor: '#DD6B55',
+	      confirmButtonText: 'Ya, saya yakin',
+	      cancelButtonText: "Tidak, batalkan proses",
+	      closeOnConfirm: false,
+	      closeOnCancel: false
+	    }, function(isConfirm){
+	        if (isConfirm) form.submit();
+	    });
+		});
+	});
+
 </script>
 
 <?php
