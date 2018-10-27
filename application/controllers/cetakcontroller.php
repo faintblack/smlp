@@ -41,7 +41,7 @@ class CetakController extends CI_Controller {
 		$tahun = substr(date('Y-m-d'), 0, 4);
 		$tanggal_mantap = $tahun.'-'.$bulan.'-'.$tanggal;
 
-		// CEK DATA PERCETAKAN
+		// CEK DATA PERCETAKAN (UNTUK APA?)
 			$where_p = array('tanggal' => $tanggal_mantap, 'nama_koran' => ucwords($this->input->post('nama_koran', TRUE)) );
 			$check_p = $this->Percetakan->get($where_p)->result();
 			

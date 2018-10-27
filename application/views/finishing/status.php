@@ -1,3 +1,7 @@
+<?php
+	$nama_bulan = array('01' => 'Januari', '02' => 'Februari', '03' => 'Maret', '04' => 'April', '05' => 'Mei', '06' => 'Juni', '07' => 'Juli', '08' => 'Agustus', '09' => 'September', '10' => 'Oktober', '11' => 'November', '12' => 'Desember');
+	$today = date('d'). ' ' .$nama_bulan[date('m')]. ' ' . date('Y');
+?>
 <style type="text/css">
 	.btn{
 		font-weight: bold;
@@ -33,14 +37,15 @@
 					              <h4 class="modal-title"><strong>Tambah Aktivitas Finishing</strong> </h4> 
 					            </div> 
 					            <div class="modal-body">
+					            	<input type="hidden" name="user" value="<?php echo $this->session->userdata('username'); ?>">
 					            	<!-- TANGGAL -->
 					            	<div class="row"> 
-					                <div class="col-md-12" style="padding-bottom: 10px;"> 
+					                <div class="col-md-12" style="padding-bottom: 15px;"> 
 					                  <div class="form-group">
 															<label class="control-label col-md-3" style="padding-top: 7px; padding-left: 0px;">Tanggal</label>
 															<div class="col-md-9">
 																<div class="input-group">
-																	<input name="tanggal" type="text" class="form-control" placeholder="Tanggal aktivitas" id="datepicker-autoclose" required>
+																	<input name="tanggal" type="text" class="form-control" placeholder="<?php echo $today; ?>" id="datepicker-autoclose" disabled>
 																	<span class="input-group-addon bg-custom b-0 text-white"><i class="icon-calender"></i></span>
 																</div>
 															</div>
@@ -49,35 +54,26 @@
 					              </div>
 					              <!-- NAMA KORAN  -->
 					              <div class="row"> 
-					                <div class="col-md-12" style="padding-bottom: 10px;"> 
+					                <div class="col-md-12" style="padding-bottom: 15px;"> 
 					                  <div class="form-group"> 
 					                    <label class="control-label col-md-3" style="padding-top: 7px; padding-left: 0px;">Nama Koran</label>
 					                    <div class="col-md-9">
-																	<input name="nama_koran" type="text" class="form-control"  placeholder="Contoh : Metro Riau" required> 
+					                    	<select name="nama_koran" class="selectpicker" data-style="btn-white btn-white" required>
+						                    	<option value="" disabled selected>Pilih Koran</option>
+						                    	<?php
+						                    	foreach ($data_cetak as $v) {
+						                    		if ($v->tanggal == date('Y-m-d')) {
+						                    	?>
+						                    	<option value="<?php echo $v->nama_koran; ?>"><?php echo $v->nama_koran; ?></option>
+						                    	<?php
+						                    		}
+						                    	}
+						                    	?>																	
+																</select> 
 					                    </div>
+					                    
 					                  </div> 
 					                </div>
-					              </div>
-					              <!-- WAKTU MULAI DAN WAKTU SELESAI -->
-					              <div class="row"> 
-					                <div class="col-md-6"> 
-					                  <div class="form-group"> 
-					                    <label class="control-label">Waktu Mulai</label> 
-					                    <div class="input-group clockpicker " data-placement="top" data-align="top" >
-																<input name="waktu_mulai" type="text" class="form-control" placeholder="Waktu Mulai Pekerjaan" required>
-																<span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
-															</div>
-					                  </div> 
-					                </div> 
-					                <div class="col-md-6"> 
-					                  <div class="form-group"> 
-					                    <label data-placement="top" class="control-label">Waktu Selesai</label> 
-					                    <div class="input-group clockpicker " data-placement="top" data-align="top" >
-																<input name="waktu_selesai" type="text" class="form-control" placeholder="Waktu Mulai Pekerjaan" required >
-																<span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
-															</div>
-					                  </div> 
-					                </div> 
 					              </div>
 					              <!-- JUMLAH EDARAN DAN STATUS -->
 					              <div class="row"> 
@@ -94,7 +90,6 @@
 						                    	<option value="" disabled selected>Pilih Status Aktivitas</option>
 																	<option value="Menunggu">Menunggu</option>
 																	<option value="Proses">Proses</option>
-																	<option value="Selesai">Selesai</option>
 																</select> 
 					                  </div> 
 					                </div> 
@@ -115,7 +110,11 @@
 				      </div>
 
 			      <!-- EDIT AKTIVITAS -->
-				     	<div id="edit-proses" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+			      	<?php
+			      	foreach ($data_finishing as $v) {
+			      		$tgl = substr($v->tanggal,8,2).' '.$nama_bulan[substr($v->tanggal,5,2)].' '.substr($v->tanggal,0,4);
+			      	?>
+			      	<div id="edit-proses-<?php echo $v->id_finishing; ?>" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 				      	<?php 
 				      	$attribute = array('data-parsley-validate' => '', 'novalidate' => '', 'role' => 'form');
 				      	echo form_open('finishingcontroller/editproses'); ?>
@@ -209,7 +208,10 @@
 					        </div>
 				      	<?php echo form_close(); ?>
 				      </div>
-
+			      	<?php
+			      	}
+			      	?>
+				     	
             <table id="datatable" class="table table-striped table-bordered">
               <thead>
                 <tr>
@@ -239,8 +241,12 @@
                   <td><center><?php echo $no; ?></center></td>
                   <td><center><?php echo $tanggal_mantap; ?></center></td>
                   <td><center><?php echo $v->nama_koran; ?></center></td>
-                  <td><center><?php echo $waktu_mulai; ?></center></td>
-                  <td><center><?php echo $waktu_selesai; ?></center></td>
+                  <td><center><?php if ($v->status == 'Menunggu') {
+                  	echo "-";
+                  } else { echo $waktu_mulai; }  ?></center></td>
+                  <td><center><?php if ($v->status != 'Selesai') {
+                  	echo "-";
+                  } else { echo $waktu_selesai; }  ?></center></td>
                   <td><center><?php echo $v->jumlah_edaran; ?></center></td>
                   <td>
                   	<center>
@@ -269,8 +275,9 @@
                   </td>
                   <td>
                   	<center>
-                  	<a href="" title="Edit Aktivitas" onclick="setId('<?php echo $v->id_finishing; ?>','<?php echo $v->tanggal; ?>','<?php echo $v->nama_koran; ?>','<?php echo $v->jam_masuk_finishing; ?>','<?php echo $v->jam_selesai_finishing; ?>','<?php echo $v->jumlah_edaran; ?>','<?php echo $v->status; ?>')" data-toggle="modal" data-target="#edit-proses"><i style="font-size: 20px;" class=" md-create"></i></a>
+                  	<a href="" title="Edit Aktivitas"  data-toggle="modal" data-target="#edit-proses-<?php echo $v->id_finishing; ?>"><i style="font-size: 20px;" class=" md-create"></i></a>
                   	<!--
+                  		onclick="setId('<?php echo $v->id_finishing; ?>','<?php echo $v->tanggal; ?>','<?php echo $v->nama_koran; ?>','<?php echo $v->jam_masuk_finishing; ?>','<?php echo $v->jam_selesai_finishing; ?>','<?php echo $v->jumlah_edaran; ?>','<?php echo $v->status; ?>')"
                   		&nbsp;&nbsp;&nbsp;
                   	<a title="Hapus Aktivitas" href="" onclick="return confirm('Apakah Anda yakin ingin menghapus data pengguna atas nama  ?')"><i style="font-size: 20px;" class="ion-trash-a"></i></a>-->
                   	</center>

@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+date_default_timezone_set("Asia/Jakarta");
 
 class FinishingController extends CI_Controller {
 
@@ -13,6 +14,7 @@ class FinishingController extends CI_Controller {
 			}
 		}
 		$this->load->model('Finishing');
+		$this->load->model('Percetakan');
 	} 
 
 	public function index(){
@@ -25,20 +27,54 @@ class FinishingController extends CI_Controller {
 	}
 
 	public function status(){
+		$this->load->model('Cetak');
+		$cetak = $this->Cetak->selectGroup()->result();
 		$finishing = $this->Finishing->select()->result();
 
-		$data = array('data_finishing' => $finishing);
+		$data = array('data_finishing' => $finishing, 'data_cetak' => $cetak);
 		$this->template->load('static','finishing/status', $data);
 	}
 
 	public function tambahProses(){
-		$tanggal = substr($this->input->post('tanggal', TRUE), 3, 2);
-		$bulan = substr($this->input->post('tanggal', TRUE), 0, 2);
-		$tahun = substr($this->input->post('tanggal', TRUE), 6, 4);
+		$tanggal = substr(date('Y-m-d'), 8, 2);
+		$bulan = substr(date('Y-m-d'), 5, 2);
+		$tahun = substr(date('Y-m-d'), 0, 4);
 		$tanggal_mantap = $tahun.'-'.$bulan.'-'.$tanggal;
 
-		$mulai = $this->input->post('waktu_mulai', TRUE).':00';
-		$selesai = $this->input->post('waktu_selesai', TRUE).':00';
+		// AMBIL ID PERCETAKAN
+			$where_p = array('tanggal' => $tanggal_mantap, 'nama_koran' => ucwords($this->input->post('nama_koran', TRUE)) );
+			$data_p = $this->Percetakan->get($where_p)->result();
+			
+		if ($this->input->post('status', TRUE) == 'Menunggu') {
+			$mulai = '00:00:00';
+		} else {
+			$mulai = date('H:i:s');
+		}
+
+		$data = array('username' => $this->input->post('user'), 'id_percetakan' => $data_p[0]->id_percetakan, 'jam_masuk_finishing' => $mulai, 'jam_selesai_finishing' => '00:00:00', 'jumlah_edaran' => $this->input->post('jumlah_edaran', TRUE), 'status' => ucwords($this->input->post('status', TRUE)) );
+		
+
+		// JIKA DATA FINISHING TELAH DIINPUTKAN SEBELUMNYA
+			$where_p = array('b.id_percetakan' => $data_p[0]->id_percetakan);
+
+			$check_f = $this->Finishing->get($where_p)->result();
+			
+			if (count($check_f) != 0) {
+				$this->session->set_flashdata('tambah_finishing_2','Aktivitas baru tidak berhasil ditambahkan, aktivitas sudah diinputkan sebelumnya');
+				redirect('finishingcontroller/status');
+			}
+
+		// INPUT DATA FINISHING
+		$insert = $this->Finishing->insert($data);
+
+		if ($insert) {
+			$this->session->set_flashdata('tambah_finishing_1','Aktivitas baru berhasil ditambahkan');
+		} else {
+			$this->session->set_flashdata('tambah_finishing_0','Aktivitas baru tidak berhasil ditambahkan, silahkan coba lagi');
+		}
+		redirect('finishingcontroller/status');
+
+		/*-----------------------------------------------------------*/
 
 		$data = array('tanggal' => $tanggal_mantap, 'nama_koran' => $this->input->post('nama_koran', TRUE), 'jam_masuk_finishing' => $mulai, 'jam_selesai_finishing' => $selesai, 'jumlah_edaran' => $this->input->post('jumlah_edaran', TRUE), 'status' => $this->input->post('status', TRUE));
 		

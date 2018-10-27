@@ -22,9 +22,10 @@ class Finishing extends CI_Model {
 	}
 
 	public function get($id){
-		$this->db->from('finishing');
+		$this->db->from('finishing a');
+		$this->db->join('percetakan b', 'b.id_percetakan = a.id_percetakan', 'left');
 		$this->db->where($id);
-		$this->db->order_by('tanggal desc, jam_masuk_finishing desc'); 
+		$this->db->order_by('tanggal desc, nama_koran asc, jam_masuk_finishing desc'); 
 		$query = $this->db->get();
 		return $query;
 	}

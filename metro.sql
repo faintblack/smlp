@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 27 Okt 2018 pada 10.41
+-- Generation Time: 27 Okt 2018 pada 17.38
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -44,8 +44,9 @@ CREATE TABLE `cetak` (
 INSERT INTO `cetak` (`id_cetak`, `id_percetakan`, `username`, `sesi`, `jam_masuk_cetak`, `jam_selesai_cetak`, `status`, `jumlah_cetak`) VALUES
 (1, 10, 'dika', 1, '00:00:00', '00:00:00', 'Menunggu', 450),
 (2, 11, 'dika', 1, '11:46:00', '13:57:36', 'Selesai', 450),
-(3, 11, 'dika', 2, '13:56:13', '00:00:00', 'Proses', 420),
-(4, 14, 'dika', 1, '00:00:00', '00:00:00', 'Menunggu', 500);
+(3, 11, 'dika', 2, '13:56:13', '20:36:38', 'Selesai', 420),
+(4, 14, 'dika', 1, '20:36:55', '22:05:55', 'Selesai', 500),
+(5, 13, 'dika', 1, '22:06:07', '00:00:00', 'Proses', 480);
 
 -- --------------------------------------------------------
 
@@ -62,6 +63,13 @@ CREATE TABLE `finishing` (
   `status` varchar(20) NOT NULL,
   `jumlah_edaran` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `finishing`
+--
+
+INSERT INTO `finishing` (`id_finishing`, `id_percetakan`, `username`, `jam_masuk_finishing`, `jam_selesai_finishing`, `status`, `jumlah_edaran`) VALUES
+(1, 13, 'rizki', '00:00:00', '00:00:00', 'Menunggu', 1500);
 
 -- --------------------------------------------------------
 
@@ -155,7 +163,7 @@ INSERT INTO `pre_cetak` (`id_pre_cetak`, `id_percetakan`, `username`, `sesi`, `j
 (16, 12, 'zul', 1, '23:02:51', '04:03:58', 'Nasional', 'Beno', 'Selesai'),
 (17, 12, 'zul', 2, '04:04:15', '04:04:28', 'Olahraga', 'Rizki', 'Selesai'),
 (18, 13, 'zul', 1, '04:05:13', '00:00:00', 'Olahraga', 'Dini', 'Proses'),
-(19, 13, 'zul', 2, '00:00:00', '00:00:00', 'Masyarakat', 'Beno', 'Menunggu'),
+(19, 13, 'zul', 2, '22:07:03', '00:00:00', 'Masyarakat', 'Beno', 'Proses'),
 (20, 14, 'zul', 1, '00:00:00', '00:00:00', 'Nasional', 'Beno', 'Menunggu');
 
 --
@@ -206,12 +214,12 @@ ALTER TABLE `pre_cetak`
 -- AUTO_INCREMENT for table `cetak`
 --
 ALTER TABLE `cetak`
-  MODIFY `id_cetak` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_cetak` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `finishing`
 --
 ALTER TABLE `finishing`
-  MODIFY `id_finishing` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_finishing` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `percetakan`
 --
