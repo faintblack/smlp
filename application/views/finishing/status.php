@@ -174,11 +174,9 @@
 					                  <div class="form-group"> 
 					                    <label class="control-label">Waktu Mulai</label> 
 					                    <div class="input-group" data-placement="top" data-align="top" >
-																<input id="waktu_mulai-edit" name="waktu_mulai" type="text" class="form-control" readonly value="<?php if ($v->status == "Menunggu") {
-																	echo "-";
-																} else {
-																	echo substr($v->jam_masuk_cetak,0,5);
-																} ?>">
+																<input id="waktu_mulai-edit" name="waktu_mulai" type="text" class="form-control" readonly value="<?php if($v->status == 'Menunggu'){
+																	echo '-';
+																} else { echo substr($v->jam_masuk_finishing,0,5); } ?>">
 																<span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
 															</div>
 					                  </div> 
@@ -190,7 +188,7 @@
 																<input id="waktu_selesai-edit" name="waktu_selesai" type="text" class="form-control" readonly value="<?php if ($v->status != "Selesai") {
 																	echo "-";
 																} else {
-																	echo substr($v->jam_selesai_cetak,0,5);
+																	echo substr($v->jam_selesai_finishing,0,5);
 																} ?>" >
 																<span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
 															</div>

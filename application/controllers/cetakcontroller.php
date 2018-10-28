@@ -155,31 +155,6 @@ class CetakController extends CI_Controller {
 				}
 				redirect('cetakcontroller/status');
 			}
-
-		/*-------------------------------------------------------------*/
-
-		$data = array('tanggal' => $tanggal_mantap, 'nama_koran' => $this->input->post('nama_koran', TRUE), 'sesi' => $this->input->post('sesi', TRUE), 'jam_masuk_cetak' => $mulai, 'jam_selesai_cetak' => $selesai, 'jumlah_cetak' => $this->input->post('jumlah_cetak', TRUE), 'status' => $this->input->post('status', TRUE));
-
-		// JIKA DATA TELAH DIINPUTKAN SEBELUMNYA
-			if (($this->input->post('sesi-old', TRUE) != $this->input->post('sesi', TRUE)) || ($this->input->post('tanggal-old', TRUE) != $this->input->post('tanggal', TRUE)) || ($this->input->post('nama_koran-old', TRUE) != $this->input->post('nama_koran', TRUE)) ) {
-				$where = array('tanggal' => $tanggal_mantap, 'nama_koran' => $this->input->post('nama_koran', TRUE), 'sesi' => $this->input->post('sesi', TRUE));
-
-				$check = $this->Cetak->get($where)->result();
-				
-				if (count($check) != 0) {
-					$this->session->set_flashdata('edit_cetak_2','Data aktivitas tidak berhasil diupdate, aktivitas sudah diinputkan sebelumnya');
-					redirect('cetakcontroller/status');
-				}
-			}
-
-		$update = $this->Cetak->update($id, $data);
-
-		if ($update) {
-			$this->session->set_flashdata('edit_cetak_1','Data aktivitas berhasil diupdate');
-		} else {
-			$this->session->set_flashdata('edit_cetak_0','Data aktivitas tidak berhasil diupdate, silahkan coba lagi');
-		}
-		redirect('cetakcontroller/status');
 	}
 
 	public function laporan(){

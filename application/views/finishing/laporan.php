@@ -113,6 +113,15 @@
 														</div>
 					                </div> 
 					              </div>
+					              <!-- STATUS -->
+					            	<div class="row"> 
+					                <div class="col-md-12"> 
+					                  <div class="form-group">
+															<label class="control-label col-md-2" style="padding-top: 7px; padding-left: 0px; margin-bottom: 0px;">Status</label>
+															<label class="control-label col-md-10" style="padding-top: 7px; padding-left: 0px; margin-bottom: 0px;">: <?php echo $v->status; ?></label>
+														</div>
+					                </div> 
+					              </div>
 		                  </div>
 		                </div>
 		              </div>

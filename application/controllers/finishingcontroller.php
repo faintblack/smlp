@@ -7,10 +7,10 @@ class FinishingController extends CI_Controller {
 	public function __construct(){
 		parent:: __construct();
 		if ($this->session->userdata('isLogin') == FALSE) {
-			redirect('login');
+			redirect('logincontroller');
 		} else {
 			if ($this->session->userdata('hak_akses') != 'Finishing') {
-				redirect('logout');
+				redirect('logoutcontroller');
 			}
 		}
 		$this->load->model('Finishing');
@@ -85,7 +85,7 @@ class FinishingController extends CI_Controller {
 		$id_f = array('id_finishing' => $this->input->post('id_finishing', TRUE)); ;
 		$id_p = array('b.id_percetakan' => $this->input->post('id_percetakan', TRUE));
 
-		// JIKA GANTI NAMA KORAN (BAGAIMANA JIKA NAMA KORAN BARU SUDAH DIINPUTKAN)
+		// JIKA GANTI NAMA KORAN 
 			if ($this->input->post('nama_koran-old', TRUE) != $this->input->post('nama_koran', TRUE)) {
 				$data_p = array('tanggal' => $tanggal_mantap, 'nama_koran' => $this->input->post('nama_koran', TRUE));
 				$check_p = $this->Percetakan->get($data_p)->result();
@@ -96,14 +96,11 @@ class FinishingController extends CI_Controller {
 					// JIKA TIDAK ADA DATA AKTIVITAS YANG SAMA PADA TABEL FINISHING
 					if (count($check_f) == 0) {
 						$data_f = array('id_percetakan' => $check_p[0]->id_percetakan);
-
+						
 						// GANTI ID PERCETAKAN PADA TABEL FINISHING
 						$update_f = $this->Finishing->update($id_f, $data_f);
 						if ($update_f) {
 							$id_p = array('b.id_percetakan' => $check_p[0]->id_percetakan );
-						} else {
-							$this->session->set_flashdata('edit_finishing_0','Data aktivitas tidak berhasil diupdate, silahkan coba lagi');
-							redirect('finishingcontroller/status');
 						}
 					} 
 					// JIKA ADA
@@ -113,42 +110,43 @@ class FinishingController extends CI_Controller {
 					}				
 			}
 
-		print_r($id_p);exit();
-		
+		// DATA INPUT 
+			switch ($this->input->post('status', TRUE)) {
+				case 'Menunggu':
+					$data = array('id_percetakan' => $id_p['b.id_percetakan'], 'jam_masuk_finishing' => strtotime('00:00:00'), 'jumlah_edaran' => $this->input->post('jumlah_edaran', TRUE), 'status' => $this->input->post('status', TRUE), 'username' => $this->input->post('user', TRUE));
+				break;
 
-		/*---------------------------------------------------------------*/
+				case 'Proses':
+					$mulai = date('H:i:s');
+					$data = array('id_percetakan' => $id_p['b.id_percetakan'], 'jam_masuk_finishing' => $mulai, 'jumlah_edaran' => $this->input->post('jumlah_edaran', TRUE), 'status' => $this->input->post('status', TRUE), 'username' => $this->input->post('user', TRUE));
+				break;
 
-		$data = array('tanggal' => $tanggal_mantap, 'nama_koran' => $this->input->post('nama_koran', TRUE), 'jam_masuk_finishing' => $mulai, 'jam_selesai_finishing' => $selesai, 'jumlah_edaran' => $this->input->post('jumlah_edaran', TRUE), 'status' => $this->input->post('status', TRUE));
-
-		// JIKA DATA TELAH DIINPUTKAN SEBELUMNYA
-			if (($this->input->post('tanggal-old', TRUE) != $this->input->post('tanggal', TRUE)) || ($this->input->post('nama_koran-old', TRUE) != $this->input->post('nama_koran', TRUE)) ) {
-				$where = array('tanggal' => $tanggal_mantap, 'nama_koran' => $this->input->post('nama_koran', TRUE));
-
-				$check = $this->Finishing->get($where)->result();
-				
-				if (count($check) != 0) {
-					$this->session->set_flashdata('edit_finishing_2','Data aktivitas tidak berhasil diupdate, aktivitas sudah diinputkan sebelumnya');
-					redirect('finishingcontroller/status');
-				}
+				case 'Selesai':
+					$selesai = date('H:i:s');
+					$data = array('id_percetakan' => $id_p['b.id_percetakan'], 'jam_selesai_finishing' => $selesai, 'jumlah_edaran' => $this->input->post('jumlah_edaran', TRUE), 'status' => $this->input->post('status', TRUE), 'username' => $this->input->post('user', TRUE));
+				break;
 			}
+		
+		// UPDATE DATA FINISHING
+			// JIKA NAMA KORAN DIUBAH
+			$update_x = $this->Finishing->update($id_f, $data);
+			if ($update_x) { // SELALU MENAMPILKAN HASIL FALSE
+				$this->session->set_flashdata('edit_finishing_1','Data aktivitas berhasil diupdate');
+			} else {
+				$this->session->set_flashdata('edit_finishing_1','Data aktivitas berhasil diupdate');
+			}
+			redirect('finishingcontroller/status');
 
-		$update = $this->Finishing->update($id, $data);
-
-		if ($update) {
-			$this->session->set_flashdata('edit_finishing_1','Data aktivitas berhasil diupdate');
-		} else {
-			$this->session->set_flashdata('edit_finishing_0','Data aktivitas tidak berhasil diupdate, silahkan coba lagi');
-		}
-		redirect('finishingcontroller/status');
 	}
 
 	public function laporan(){
 		$this->load->model('Cetak');
 
-		$finishing = $this->Finishing->selectGroup()->result();
+		$percetakan = $this->Percetakan->select()->result();
+		$finishing = $this->Finishing->select()->result();
 		$cetak = $this->Cetak->select()->result();
 
-		$data = array('data_finishing' => $finishing, 'data_cetak' => $cetak);
+		$data = array('data_finishing' => $finishing, 'data_cetak' => $cetak, 'data_percetakan' => $percetakan);
 		$this->template->load('static','finishing/laporan', $data);
 	}
 
