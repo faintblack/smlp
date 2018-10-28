@@ -7,7 +7,7 @@ class Finishing extends CI_Model {
 		$this->db->select('*');
     $this->db->from('finishing a'); 
     $this->db->join('percetakan b', 'b.id_percetakan = a.id_percetakan', 'left');
-    $this->db->order_by('tanggal desc, jam_masuk_finishing desc');
+    $this->db->order_by('tanggal desc, id_finishing desc,jam_masuk_finishing desc');
     $query = $this->db->get(); 
     return $query;
 	}

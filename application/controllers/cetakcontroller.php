@@ -119,9 +119,8 @@ class CetakController extends CI_Controller {
 				$id_p = $check_p[0]->id_percetakan;
 
 				// CEK APAKAH AKTIVITAS BARU SUDAH ADA PADA TABEL CETAK
-					$check_c = $this->Cetak->get(array('b.id_percetakan' => $id_p))->result();
-
-					// JIKA TIDAK ADA AKTIVITAS YANG SAMA PADA TABEL FINISHING
+					$check_c = $this->Cetak->get(array('b.id_percetakan' => $id_p, 'sesi' => $this->input->post('sesi', TRUE) ))->result();
+					// JIKA TIDAK ADA AKTIVITAS YANG SAMA PADA TABEL CETAK
 					if (count($check_c) == 0) {
 						$data_c = array('id_percetakan' => $id_p);
    					

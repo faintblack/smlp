@@ -7,7 +7,7 @@ class Cetak extends CI_Model {
 		$this->db->select('*');
     $this->db->from('cetak a'); 
     $this->db->join('percetakan b', 'b.id_percetakan = a.id_percetakan', 'left');
-    $this->db->order_by('tanggal desc, jam_masuk_cetak desc, sesi desc');
+    $this->db->order_by('tanggal desc, id_cetak desc, jam_masuk_cetak desc, sesi desc');
     $query = $this->db->get(); 
     return $query;
 	}

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 28 Okt 2018 pada 07.42
+-- Generation Time: 28 Okt 2018 pada 08.48
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -49,9 +49,13 @@ INSERT INTO `cetak` (`id_cetak`, `id_percetakan`, `username`, `sesi`, `jam_masuk
 (5, 13, 'dika', 1, '22:06:07', '00:00:00', 'Proses', 480),
 (6, 15, 'dika', 1, '01:01:23', '01:17:08', 'Selesai', 480),
 (7, 16, 'dika', 1, '08:50:23', '08:50:31', 'Selesai', 500),
-(8, 16, 'dika', 2, '09:27:24', '00:00:00', 'Proses', 500),
-(11, 16, 'dika', 3, '10:04:42', '00:00:00', 'Proses', 420),
-(12, 17, 'dika', 1, '13:31:59', '00:00:00', 'Proses', 450);
+(8, 16, 'dika', 2, '14:24:44', '14:24:54', 'Selesai', 504),
+(11, 16, 'dika', 3, '10:04:42', '14:25:30', 'Selesai', 400),
+(12, 17, 'dika', 1, '13:31:59', '14:23:29', 'Selesai', 450),
+(14, 17, 'dika', 2, '14:13:16', '14:24:03', 'Selesai', 400),
+(15, 19, 'dika', 1, '14:29:25', '14:29:35', 'Selesai', 400),
+(16, 18, 'dika', 1, '14:33:56', '14:34:01', 'Selesai', 400),
+(17, 20, 'dika', 1, '14:39:17', '14:39:22', 'Selesai', 400);
 
 -- --------------------------------------------------------
 
@@ -77,7 +81,9 @@ INSERT INTO `finishing` (`id_finishing`, `id_percetakan`, `username`, `jam_masuk
 (5, 13, 'rizki', '00:39:54', '00:56:53', 'Selesai', 1601),
 (7, 14, 'rizki', '00:57:19', '08:31:05', 'Selesai', 1605),
 (11, 15, 'rizki', '11:03:21', '00:00:00', 'Proses', 1200),
-(12, 16, 'rizki', '00:00:00', '00:00:00', 'Menunggu', 1300);
+(12, 16, 'rizki', '00:00:00', '00:00:00', 'Menunggu', 1300),
+(13, 20, 'rizki', '14:40:13', '14:41:45', 'Selesai', 1601),
+(15, 18, 'rizki', '14:41:25', '14:41:50', 'Selesai', 1202);
 
 -- --------------------------------------------------------
 
@@ -133,7 +139,9 @@ INSERT INTO `percetakan` (`id_percetakan`, `tanggal`, `nama_koran`) VALUES
 (15, '2018-10-28', 'Kompas'),
 (16, '2018-10-28', 'Riau MX'),
 (17, '2018-10-28', 'Metro'),
-(18, '2018-10-28', 'Haluan');
+(18, '2018-10-28', 'Haluan'),
+(19, '2018-10-28', 'Riau Pos'),
+(20, '2018-10-28', 'MX');
 
 -- --------------------------------------------------------
 
@@ -181,8 +189,12 @@ INSERT INTO `pre_cetak` (`id_pre_cetak`, `id_percetakan`, `username`, `sesi`, `j
 (22, 16, 'zul', 1, '09:36:27', '09:59:30', 'Nasional', 'Dini', 'Selesai'),
 (23, 16, 'zul', 2, '09:37:36', '10:01:58', 'Olahraga', 'Beno', 'Selesai'),
 (25, 16, 'zul', 3, '10:02:06', '10:02:19', 'Masyarakat', 'Beno', 'Selesai'),
-(26, 17, 'zul', 1, '00:00:00', '00:00:00', 'Nasional', 'Dian', 'Selesai'),
-(27, 18, 'zul', 1, '00:00:00', '00:00:00', 'Nasional', 'Bayu', 'Menunggu');
+(26, 17, 'zul', 1, '13:25:00', '14:25:00', 'Nasional', 'Dian', 'Selesai'),
+(27, 18, 'zul', 1, '13:56:29', '13:58:29', 'Nasional', 'Bayu', 'Selesai'),
+(28, 19, 'zul', 1, '14:29:13', '14:29:18', 'Nasional', 'Rizki', 'Selesai'),
+(29, 20, 'zul', 1, '14:39:03', '14:39:08', 'Masyarakat', 'Dika', 'Selesai'),
+(30, 18, 'zul', 2, '00:00:00', '00:00:00', 'Masyarakat', 'Bayu', 'Menunggu'),
+(31, 17, 'zul', 2, '14:12:56', '14:13:02', 'Masyarakat', 'Dini', 'Selesai');
 
 --
 -- Indexes for dumped tables
@@ -232,22 +244,22 @@ ALTER TABLE `pre_cetak`
 -- AUTO_INCREMENT for table `cetak`
 --
 ALTER TABLE `cetak`
-  MODIFY `id_cetak` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_cetak` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `finishing`
 --
 ALTER TABLE `finishing`
-  MODIFY `id_finishing` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_finishing` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `percetakan`
 --
 ALTER TABLE `percetakan`
-  MODIFY `id_percetakan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_percetakan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT for table `pre_cetak`
 --
 ALTER TABLE `pre_cetak`
-  MODIFY `id_pre_cetak` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id_pre_cetak` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
