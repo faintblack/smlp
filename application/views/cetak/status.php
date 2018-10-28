@@ -452,5 +452,7 @@
 		echo "<script>alert('".$this->session->flashdata('edit_cetak_2')."');</script>";
 	} else if ($this->session->flashdata('tambah_cetak_3')) {
 		echo "<script>alert('".$this->session->flashdata('tambah_cetak_3')."');</script>";
+	} else if ($this->session->flashdata('tambah_cetak_4')) {
+		echo "<script>alert('".$this->session->flashdata('tambah_cetak_4')."');</script>";
 	}
 ?>

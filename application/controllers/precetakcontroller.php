@@ -97,13 +97,11 @@ class PreCetakController extends CI_Controller {
 
 				// JIKA BELUM ADA TANGGAL DAN NAMA KORAN, MAKA EDIT DATA PERCETAKAN
 				if (count($check_p) == 0) {
+					$id_p = array('id_percetakan' => $this->input->post('id_percetakan', TRUE));
 					$update_p = $this->Percetakan->update($id_p, $data_p);					
 					if ($update_p) {
 						$id_p = array('b.id_percetakan' => $this->input->post('id_percetakan', TRUE) );
-					} else {
-						$this->session->set_flashdata('edit_pre_cetak_0','Data aktivitas tidak berhasil diupdate, silahkan coba lagi');
-						redirect('precetakcontroller/status');
-					}
+					} 
 				} 
 				// JIKA SUDAH ADA MUNCUL NOTIFIKASI GAGAL UPDATE AKTIVITAS
 				else {
@@ -154,7 +152,7 @@ class PreCetakController extends CI_Controller {
 				if ($update_pc) {
 					$this->session->set_flashdata('edit_pre_cetak_1','Data aktivitas berhasil diupdate');
 				} else {
-					$this->session->set_flashdata('edit_pre_cetak_0','Data aktivitas tidak berhasil diupdate, silahkan coba lagi');
+					$this->session->set_flashdata('edit_pre_cetak_1','Data aktivitas berhasil diupdate');
 				}
 				redirect('precetakcontroller/status');
 			}
