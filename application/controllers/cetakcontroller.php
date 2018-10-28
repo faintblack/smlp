@@ -101,6 +101,8 @@ class CetakController extends CI_Controller {
 	}
 
 	public function editProses(){
+		$this->load->model('Pre_Cetak');
+
 		$tanggal = substr($this->input->post('tanggal', TRUE), 3, 2);
 		$bulan = substr($this->input->post('tanggal', TRUE), 0, 2);
 		$tahun = substr($this->input->post('tanggal', TRUE), 6, 4);
@@ -114,13 +116,40 @@ class CetakController extends CI_Controller {
 			if ($this->input->post('nama_koran-old', TRUE) != $this->input->post('nama_koran', TRUE)) {
 				$data_p = array('tanggal' => $tanggal_mantap, 'nama_koran' => $this->input->post('nama_koran', TRUE));
 				$check_p = $this->Percetakan->get($data_p)->result();
+				$id_p = $check_p[0]->id_percetakan;
 
 				// CEK APAKAH AKTIVITAS BARU SUDAH ADA PADA TABEL CETAK
-					$check_c = $this->Cetak->get(array('b.id_percetakan' => $check_p[0]->id_percetakan))->result();
+					$check_c = $this->Cetak->get(array('b.id_percetakan' => $id_p))->result();
 
 					// JIKA TIDAK ADA AKTIVITAS YANG SAMA PADA TABEL FINISHING
 					if (count($check_c) == 0) {
-						$data_c = array('id_percetakan' => $check_p[0]->id_percetakan);
+						$data_c = array('id_percetakan' => $id_p);
+   					
+   					/*----------------------------------------------------------------*/
+						
+						// SEBELUM GANTI NAMA KORAN, CEK STATUS TERLEBIH DAHULU
+							$where_pc = array('b.id_percetakan' => $id_p);
+							$check_pc = $this->Pre_Cetak->get($where_pc)->result();
+							
+							foreach ($check_pc as $v) {
+								// JIKA SESI YANG DIINPUTKAN SUDAH ADA PADA TABEL PRE CETAK
+								if ($v->sesi == $this->input->post('sesi', TRUE)) {
+									$next = TRUE;
+									$status_pc = $v->status;
+								}
+							}
+								// JIKA SESI YANG DIINPUTKAN BELUM ADA PADA TABEL PRE CETAK
+								if (!isset($next)) {
+									$this->session->set_flashdata('tambah_cetak_3','Aktivitas baru tidak berhasil diupdate, aktivitas divisi pre cetak '.$check_p[0]->nama_koran.' sesi '.$this->input->post('sesi', TRUE).' belum diinputkan');
+									redirect('cetakcontroller/status');
+								}
+
+							if (($status_pc != 'Selesai') && ($this->input->post('status', TRUE) == 'Proses' )) {
+								$this->session->set_flashdata('tambah_cetak_4','Aktivitas baru tidak berhasil diupdate, aktivitas divisi pre cetak '.$check_pc[0]->nama_koran.' sesi '.$this->input->post('sesi', TRUE).' belum selesai');
+								redirect('cetakcontroller/status');
+							}
+
+						/*----------------------------------------------------------------*/
 
 						// GANTI ID PERCETAKAN PADA TABEL CETAK
 						$update_c = $this->Cetak->update($id_c, $data_c);
@@ -133,24 +162,8 @@ class CetakController extends CI_Controller {
 						$this->session->set_flashdata('edit_cetak_2','Data aktivitas tidak berhasil diupdate, sesi sudah diinputkan sebelumnya');
 						redirect('cetakcontroller/status');
 					}
-
-				/*---------------------------
-					$data_c = array('id_percetakan' => $check_p[0]->id_percetakan);
-
-					// GANTI ID PERCETAKAN PADA TABEL CETAK
-					$update_c = $this->Cetak->update($id_c, $data_c);
-					if ($update_c) {
-						$id_p = array('b.id_percetakan' => $check_p[0]->id_percetakan );
-					} else {
-						$this->session->set_flashdata('edit_cetak_0','Data aktivitas tidak berhasil diupdate, silahkan coba lagi');
-						redirect('precetakcontroller/status');
-					}
-					--------------------------*/
 			}
-		
-		/*------------------------------------------------------------------*/
-			print_r($id_p);exit();
-			// LAST : CEK SESI TERAKHIR DIVISI PRE CETAK
+					
 		// CEK DATA PRE CETAK (TINGGAL CEK SESI YANG SAMA PADA DATA PRE CETAK)
 			$where_pc = array('b.id_percetakan' => $id_p['b.id_percetakan']);
 			$check_pc = $this->Pre_Cetak->get($where_pc)->result();
@@ -164,16 +177,14 @@ class CetakController extends CI_Controller {
 			}
 				// JIKA SESI YANG DIINPUTKAN BELUM ADA PADA TABEL PRE CETAK
 				if (!isset($next)) {
-					$this->session->set_flashdata('tambah_cetak_3','Aktivitas baru tidak berhasil ditambahkan, aktivitas divisi pre cetak '.$check_p[0]->nama_koran.' sesi '.$this->input->post('sesi', TRUE).' belum diinputkan');
+					$this->session->set_flashdata('tambah_cetak_3','Aktivitas baru tidak berhasil diupdate, aktivitas divisi pre cetak '.$check_p[0]->nama_koran.' sesi '.$this->input->post('sesi', TRUE).' belum diinputkan');
 					redirect('cetakcontroller/status');
 				}
 
 			if (($status_pc != 'Selesai') && ($this->input->post('status', TRUE) == 'Proses' )) {
-				$this->session->set_flashdata('tambah_cetak_4','Aktivitas baru tidak berhasil ditambahkan, aktivitas divisi pre cetak '.$check_p[0]->nama_koran.' sesi '.$this->input->post('sesi', TRUE).' belum selesai');
+				$this->session->set_flashdata('tambah_cetak_4','Aktivitas baru tidak berhasil diupdate, aktivitas divisi pre cetak '.$check_pc[0]->nama_koran.' sesi '.$this->input->post('sesi', TRUE).' belum selesai');
 				redirect('cetakcontroller/status');
 			}
-
-		/*------------------------------------------------------------------*/
 
 		$data_c_check = $this->Cetak->get($id_p)->result();
 		// DATA INPUT 

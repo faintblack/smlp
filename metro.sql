@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 28 Okt 2018 pada 05.34
+-- Generation Time: 28 Okt 2018 pada 07.42
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -51,7 +51,7 @@ INSERT INTO `cetak` (`id_cetak`, `id_percetakan`, `username`, `sesi`, `jam_masuk
 (7, 16, 'dika', 1, '08:50:23', '08:50:31', 'Selesai', 500),
 (8, 16, 'dika', 2, '09:27:24', '00:00:00', 'Proses', 500),
 (11, 16, 'dika', 3, '10:04:42', '00:00:00', 'Proses', 420),
-(12, 17, 'dika', 1, '00:00:00', '00:00:00', 'Menunggu', 450);
+(12, 17, 'dika', 1, '13:31:59', '00:00:00', 'Proses', 450);
 
 -- --------------------------------------------------------
 
@@ -181,7 +181,7 @@ INSERT INTO `pre_cetak` (`id_pre_cetak`, `id_percetakan`, `username`, `sesi`, `j
 (22, 16, 'zul', 1, '09:36:27', '09:59:30', 'Nasional', 'Dini', 'Selesai'),
 (23, 16, 'zul', 2, '09:37:36', '10:01:58', 'Olahraga', 'Beno', 'Selesai'),
 (25, 16, 'zul', 3, '10:02:06', '10:02:19', 'Masyarakat', 'Beno', 'Selesai'),
-(26, 17, 'zul', 1, '00:00:00', '00:00:00', 'Nasional', 'Dian', 'Menunggu'),
+(26, 17, 'zul', 1, '00:00:00', '00:00:00', 'Nasional', 'Dian', 'Selesai'),
 (27, 18, 'zul', 1, '00:00:00', '00:00:00', 'Nasional', 'Bayu', 'Menunggu');
 
 --
