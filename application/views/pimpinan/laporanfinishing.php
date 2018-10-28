@@ -101,7 +101,9 @@
                           <div class="col-md-12"> 
                             <div class="form-group">
                               <label class="control-label col-md-2" style="padding-top: 7px; padding-left: 0px; margin-bottom: 0px;">Waktu Mulai</label>
-                              <label class="control-label col-md-10" style="padding-top: 7px; padding-left: 0px; margin-bottom: 0px;">: <?php echo $waktu_mulai; ?></label>
+                              <label class="control-label col-md-10" style="padding-top: 7px; padding-left: 0px; margin-bottom: 0px;">: <?php if ($v->status == 'Menunggu') {
+                                  echo "-";
+                                } else { echo $waktu_mulai; }  ?></label>
                             </div>
                           </div> 
                         </div>
@@ -110,7 +112,18 @@
                           <div class="col-md-12"> 
                             <div class="form-group">
                               <label class="control-label col-md-2" style="padding-top: 7px; padding-left: 0px; margin-bottom: 0px;">Waktu Selesai</label>
-                              <label class="control-label col-md-10" style="padding-top: 7px; padding-left: 0px; margin-bottom: 0px;">: <?php echo $waktu_selesai; ?></label>
+                              <label class="control-label col-md-10" style="padding-top: 7px; padding-left: 0px; margin-bottom: 0px;">: <?php if ($v->status != 'Selesai') {
+                                  echo "-";
+                                } else { echo $waktu_selesai; }  ?></label>
+                            </div>
+                          </div> 
+                        </div>
+                        <!-- STATUS -->
+                        <div class="row"> 
+                          <div class="col-md-12"> 
+                            <div class="form-group">
+                              <label class="control-label col-md-2" style="padding-top: 7px; padding-left: 0px; margin-bottom: 0px;">Status</label>
+                              <label class="control-label col-md-10" style="padding-top: 7px; padding-left: 0px; margin-bottom: 0px;">: <?php echo $v->status; ?></label>
                             </div>
                           </div> 
                         </div>

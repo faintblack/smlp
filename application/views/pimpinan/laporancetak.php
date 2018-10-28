@@ -91,6 +91,7 @@
                                     <th><center>Waktu Mulai</center></th>
                                     <th><center>Waktu Selesai</center></th>
                                     <th><center>Jumlah Cetak</center></th>
+                                    <th><center>Status</center></th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -104,9 +105,14 @@
                                   <tr>
                                     <th scope="row"><center><?php echo $no; ?></center></th>
                                     <td><center><?php echo $x->sesi; ?></center></td>
-                                    <td><center><?php echo $waktu_mulai; ?></center></td>
-                                    <td><center><?php echo $waktu_selesai; ?></center></td>
+                                    <td><center><?php if ($x->status == 'Menunggu') {
+									                  	echo "-";
+									                  } else { echo $waktu_mulai; }  ?></center></td>
+                                    <td><center><?php if ($x->status != 'Selesai') {
+									                  	echo "-";
+									                  } else { echo $waktu_selesai; }  ?></center></td>
                                     <td><center><?php echo $x->jumlah_cetak; ?></center></td>
+                                    <td><center><?php echo $x->status; ?></center></td>
                                   </tr>
                                   <?php
                                     $no++;

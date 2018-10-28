@@ -54,6 +54,7 @@
                 <tr>
                   <th width="30"><center>No.</center></th>
                   <th width="120"><center>Divisi</center></th>
+                  <th width="120"><center>Nama User</center></th>
                   <th width="100"><center>Tanggal</center></th>
                   <th width="180"><center>Koran</center></th>
                   <th width="100"><center>Sesi</center></th>
@@ -76,9 +77,11 @@
                   <td><center>-</center></td>
                   <td><center>-</center></td>
                   <td><center>-</center></td>
+                  <td><center>-</center></td>
                   <?php
                   } else {
                   ?>
+                  <td><center><?php echo $data_pre_cetak[0]->username; ?></center></td>
                   <td><center><?php echo $tanggal_mantap_pc; ?></center></td>
                   <td><center><?php echo $data_pre_cetak[0]->nama_koran; ?></center></td>
                   <td><center><?php echo $data_pre_cetak[0]->sesi; ?></center></td>
@@ -123,9 +126,11 @@
                   <td><center>-</center></td>
                   <td><center>-</center></td>
                   <td><center>-</center></td>
+                  <td><center>-</center></td>
                   <?php
                   } else {
                   ?>
+                  <td><center><?php echo $data_cetak[0]->username; ?></center></td>
                   <td><center><?php echo $tanggal_mantap_c; ?></center></td>
                   <td><center><?php echo $data_cetak[0]->nama_koran; ?></center></td>
                   <td><center><?php echo $data_cetak[0]->sesi; ?></center></td>
@@ -164,9 +169,11 @@
                   <td><center>-</center></td>
                   <td><center>-</center></td>
                   <td><center>-</center></td>
+                  <td><center>-</center></td>
                   <?php
                   } else {
                   ?>
+                  <td><center><?php echo $data_finishing[0]->username; ?></center></td>
                   <td><center><?php echo $tanggal_mantap_f; ?></center></td>
                   <td><center><?php echo $data_finishing[0]->nama_koran; ?></center></td>
                   <td><center>1</center></td>
