@@ -43,19 +43,13 @@ class CetakController extends CI_Controller {
 		$tahun = substr(date('Y-m-d'), 0, 4);
 		$tanggal_mantap = $tahun.'-'.$bulan.'-'.$tanggal;
 
-		// CEK DATA PERCETAKAN (UNTUK APA?)
+		// AMBIL ID PERCETAKAN 
 			$where_p = array('tanggal' => $tanggal_mantap, 'nama_koran' => ucwords($this->input->post('nama_koran', TRUE)) );
 			$check_p = $this->Percetakan->get($where_p)->result();
-			
-			// JIKA BELUM ADA DATA PERCETAKAN
-			if (count($check_p) == 0) {
-				// PERINGATAN BELUM ADA DATA PRECETAK
-				//$this->session->set_flashdata('tambah_cetak_3','Aktivitas baru tidak berhasil ditambahkan, aktivitas belum dimulai oleh divisi pre cetak');
-				//redirect('cetakcontroller/status');
-			}
-
-		// CEK DATA PRE CETAK (DATA PRECETAK PASTI SUDAH ADA, TINGGAL CEK SESI YANG SAMA PADA PRECETAK)
-			$where_pc = array('b.id_percetakan' => $check_p[0]->id_percetakan);
+			$id_p = $check_p[0]->id_percetakan;
+						
+		// CEK DATA PRE CETAK (DATA PRECETAKAN PASTI SUDAH ADA, TINGGAL CEK SESI YANG SAMA PADA PRECETAK)
+			$where_pc = array('b.id_percetakan' => $id_p);
 			$check_pc = $this->Pre_Cetak->get($where_pc)->result();
 			
 			foreach ($check_pc as $v) {

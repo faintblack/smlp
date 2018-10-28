@@ -376,5 +376,9 @@
 		echo "<script>alert('".$this->session->flashdata('tambah_finishing_2')."');</script>";
 	} else if ($this->session->flashdata('edit_finishing_2')) {
 		echo "<script>alert('".$this->session->flashdata('edit_finishing_2')."');</script>";
+	} else if ($this->session->flashdata('tambah_finishing_3')) {
+		echo "<script>alert('".$this->session->flashdata('tambah_finishing_3')."');</script>";
+	} else if ($this->session->flashdata('edit_finishing_3')) {
+		echo "<script>alert('".$this->session->flashdata('edit_finishing_3')."');</script>";
 	}
 ?>
