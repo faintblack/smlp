@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 28 Okt 2018 pada 05.05
+-- Generation Time: 28 Okt 2018 pada 05.34
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -50,7 +50,8 @@ INSERT INTO `cetak` (`id_cetak`, `id_percetakan`, `username`, `sesi`, `jam_masuk
 (6, 15, 'dika', 1, '01:01:23', '01:17:08', 'Selesai', 480),
 (7, 16, 'dika', 1, '08:50:23', '08:50:31', 'Selesai', 500),
 (8, 16, 'dika', 2, '09:27:24', '00:00:00', 'Proses', 500),
-(11, 16, 'dika', 3, '10:04:42', '00:00:00', 'Proses', 420);
+(11, 16, 'dika', 3, '10:04:42', '00:00:00', 'Proses', 420),
+(12, 17, 'dika', 1, '00:00:00', '00:00:00', 'Menunggu', 450);
 
 -- --------------------------------------------------------
 
@@ -131,7 +132,8 @@ INSERT INTO `percetakan` (`id_percetakan`, `tanggal`, `nama_koran`) VALUES
 (14, '2018-10-27', 'Haluan Riau'),
 (15, '2018-10-28', 'Kompas'),
 (16, '2018-10-28', 'Riau MX'),
-(17, '2018-10-28', 'Metro');
+(17, '2018-10-28', 'Metro'),
+(18, '2018-10-28', 'Haluan');
 
 -- --------------------------------------------------------
 
@@ -175,11 +177,12 @@ INSERT INTO `pre_cetak` (`id_pre_cetak`, `id_percetakan`, `username`, `sesi`, `j
 (18, 13, 'zul', 1, '04:05:13', '00:00:00', 'Olahraga', 'Dini', 'Proses'),
 (19, 13, 'zul', 2, '22:07:03', '00:00:00', 'Masyarakat', 'Beno', 'Proses'),
 (20, 14, 'zul', 1, '00:00:00', '00:00:00', 'Nasional', 'Beno', 'Menunggu'),
-(21, 15, 'zul', 1, '00:58:58', '00:00:00', 'Masyarakat', 'Dian', 'Proses'),
+(21, 15, 'zul', 1, '00:58:58', '11:17:26', 'Masyarakat', 'Dian', 'Selesai'),
 (22, 16, 'zul', 1, '09:36:27', '09:59:30', 'Nasional', 'Dini', 'Selesai'),
 (23, 16, 'zul', 2, '09:37:36', '10:01:58', 'Olahraga', 'Beno', 'Selesai'),
 (25, 16, 'zul', 3, '10:02:06', '10:02:19', 'Masyarakat', 'Beno', 'Selesai'),
-(26, 17, 'zul', 1, '00:00:00', '00:00:00', 'Nasional', 'Dian', 'Menunggu');
+(26, 17, 'zul', 1, '00:00:00', '00:00:00', 'Nasional', 'Dian', 'Menunggu'),
+(27, 18, 'zul', 1, '00:00:00', '00:00:00', 'Nasional', 'Bayu', 'Menunggu');
 
 --
 -- Indexes for dumped tables
@@ -229,7 +232,7 @@ ALTER TABLE `pre_cetak`
 -- AUTO_INCREMENT for table `cetak`
 --
 ALTER TABLE `cetak`
-  MODIFY `id_cetak` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_cetak` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `finishing`
 --
@@ -239,12 +242,12 @@ ALTER TABLE `finishing`
 -- AUTO_INCREMENT for table `percetakan`
 --
 ALTER TABLE `percetakan`
-  MODIFY `id_percetakan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_percetakan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `pre_cetak`
 --
 ALTER TABLE `pre_cetak`
-  MODIFY `id_pre_cetak` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id_pre_cetak` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
