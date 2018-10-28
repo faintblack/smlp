@@ -136,7 +136,6 @@ class FinishingController extends CI_Controller {
 				$this->session->set_flashdata('edit_finishing_1','Data aktivitas berhasil diupdate');
 			}
 			redirect('finishingcontroller/status');
-
 	}
 
 	public function laporan(){

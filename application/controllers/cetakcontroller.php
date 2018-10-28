@@ -97,16 +97,37 @@ class CetakController extends CI_Controller {
 				$data_p = array('tanggal' => $tanggal_mantap, 'nama_koran' => $this->input->post('nama_koran', TRUE));
 				$check_p = $this->Percetakan->get($data_p)->result();
 
-				$data_c = array('id_percetakan' => $check_p[0]->id_percetakan);
+				// CEK APAKAH AKTIVITAS BARU SUDAH ADA PADA TABEL CETAK
+					$check_c = $this->Cetak->get(array('b.id_percetakan' => $check_p[0]->id_percetakan))->result();
 
-				// GANTI ID PERCETAKAN PADA TABEL CETAK
-				$update_c = $this->Cetak->update($id_c, $data_c);
-				if ($update_c) {
-					$id_p = array('b.id_percetakan' => $check_p[0]->id_percetakan );
-				} else {
-					$this->session->set_flashdata('edit_cetak_0','Data aktivitas tidak berhasil diupdate, silahkan coba lagi');
-					redirect('precetakcontroller/status');
-				}
+					// JIKA TIDAK ADA AKTIVITAS YANG SAMA PADA TABEL FINISHING
+					if (count($check_c) == 0) {
+						$data_c = array('id_percetakan' => $check_p[0]->id_percetakan);
+
+						// GANTI ID PERCETAKAN PADA TABEL CETAK
+						$update_c = $this->Cetak->update($id_c, $data_c);
+						if ($update_c) {
+							$id_p = array('b.id_percetakan' => $check_p[0]->id_percetakan );
+						}
+					} 
+					// JIKA ADA
+					else {
+						$this->session->set_flashdata('edit_cetak_2','Data aktivitas tidak berhasil diupdate, sesi sudah diinputkan sebelumnya');
+						redirect('cetakcontroller/status');
+					}
+
+				/*---------------------------
+					$data_c = array('id_percetakan' => $check_p[0]->id_percetakan);
+
+					// GANTI ID PERCETAKAN PADA TABEL CETAK
+					$update_c = $this->Cetak->update($id_c, $data_c);
+					if ($update_c) {
+						$id_p = array('b.id_percetakan' => $check_p[0]->id_percetakan );
+					} else {
+						$this->session->set_flashdata('edit_cetak_0','Data aktivitas tidak berhasil diupdate, silahkan coba lagi');
+						redirect('precetakcontroller/status');
+					}
+					--------------------------*/
 			}
 
 		$data_c_check = $this->Cetak->get($id_p)->result();
