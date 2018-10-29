@@ -153,7 +153,7 @@
               	<?php
               	$no = 1;
               	$nama_bulan = array('01' => 'Januari', '02' => 'Februari', '03' => 'Maret', '04' => 'April', '05' => 'Mei', '06' => 'Juni', '07' => 'Juli', '08' => 'Agustus', '09' => 'September', '10' => 'Oktober', '11' => 'November', '12' => 'Desember', );
-              	foreach ($data_cetak as $v) {
+              	foreach ($data_percetakan as $v) {
               		$tanggal = substr($v->tanggal, 8,2);
 									$bulan = $nama_bulan[substr($v->tanggal, 5,2)] ;
 									$tahun = substr($v->tanggal, 0,4);
